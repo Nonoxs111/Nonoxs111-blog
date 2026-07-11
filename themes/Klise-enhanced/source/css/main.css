@@ -550,7 +550,9 @@ mark,
 
 .hero {
   min-height: 100vh;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .author {
   margin-top: 6.3rem;
@@ -620,19 +622,16 @@ mark,
 
 /* Arrow at bottom of hero section */
 .scroll-hint {
-  position: absolute;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
+  text-align: center;
+  padding-bottom: 60px;
   font-size: 28px;
   color: #aaa;
   animation: bounce 2s infinite;
   cursor: default;
-  z-index: 2;
 }
 @keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(8px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
 }
 
 /* Remove focus outlines on clicks */
