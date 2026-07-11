@@ -4,12 +4,18 @@
       <script src="<%= url_for(url) %>"></script>
     <% }); %>
   <% } %>
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
   <script>
-    window.FPConfig = {
-      delay: 0,
-      ignoreKeywords: [],
-      maxRPS: 3,
-      hoverDelay: 50,
-    };
+    var pjax = new Pjax({
+      elements: 'a.menu-link, a[href^="/"]:not([target="_blank"])',
+      selectors: ['#pjax-container', 'title']
+    });
+    document.addEventListener('pjax:success', function() {
+      // re-apply highlight data-lang after pjax swap
+      document.querySelectorAll('figure.highlight').forEach(function(item) {
+        var langName = item.getAttribute('class').split(' ')[1];
+        if (langName === 'plain' || langName === undefined) langName = 'Code';
+        item.setAttribute('data-lang', langName);
+      });
+    });
   </script>
-  <script defer src="https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>

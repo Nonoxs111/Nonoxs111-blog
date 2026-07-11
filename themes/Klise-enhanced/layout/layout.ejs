@@ -34,7 +34,7 @@
       setTimeout(() => body.classList.remove("notransition"), 75);
     </script>
   <%-partial('partials/header')%>
-  <%- body %>
+  <div id="pjax-container"><%- body %></div>
   <%-partial('partials/foot')%>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
