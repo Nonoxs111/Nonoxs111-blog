@@ -621,7 +621,7 @@ mark,
 /* Arrow at bottom of hero section */
 .scroll-hint {
   position: absolute;
-  bottom: 50px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 28px;
