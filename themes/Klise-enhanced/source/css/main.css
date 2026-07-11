@@ -1,6 +1,33 @@
 @charset "UTF-8";
 /*----在此处修改背景图片，可为明暗模式设置不同的背景图片----*/
 /* 图片路径，请将图片存放至主题文件夹下的source/img */
+
+/* Rain canvas */
+#rain-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Name & bio fade-in-up animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.author-name, .author-bio {
+  animation: fadeInUp 1s ease both;
+}
+.author-bio { animation-delay: 0.15s; }
+
+#pjax-container, .navbar, .wrapper {
+  position: relative;
+  z-index: 1;
+}
+
 body {
   color: #0d122b;
   background: 

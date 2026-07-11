@@ -19,3 +19,70 @@
       });
     });
   </script>
+  <script>
+  // Blue rain droplet canvas
+  (function() {
+    var canvas = document.getElementById('rain-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H;
+    var drops = [];
+    var DROP_COUNT = 80;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function randomDrop() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * -H,
+        r: 2 + Math.random() * 4,
+        speed: 6 + Math.random() * 10,
+        opacity: 0.15 + Math.random() * 0.25,
+        sway: (Math.random() - 0.5) * 1.5
+      };
+    }
+
+    for (var i = 0; i < DROP_COUNT; i++) {
+      var d = randomDrop();
+      d.y = Math.random() * H;
+      drops.push(d);
+    }
+
+    function drawDrop(drop) {
+      ctx.save();
+      ctx.translate(drop.x, drop.y);
+      ctx.beginPath();
+      // teardrop shape
+      ctx.moveTo(0, -drop.r * 2);
+      ctx.bezierCurveTo(drop.r, -drop.r, drop.r, 0, 0, drop.r);
+      ctx.bezierCurveTo(-drop.r, 0, -drop.r, -drop.r, 0, -drop.r * 2);
+      ctx.closePath();
+      var isDark = document.body.getAttribute('data-theme') === 'dark';
+      var color = isDark ? '100, 180, 220' : '80, 160, 210';
+      ctx.fillStyle = 'rgba(' + color + ',' + drop.opacity + ')';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < drops.length; i++) {
+        var drop = drops[i];
+        drop.y += drop.speed;
+        drop.x += drop.sway;
+        if (drop.y > H + 20) {
+          drops[i] = randomDrop();
+        }
+        drawDrop(drop);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+  </script>
