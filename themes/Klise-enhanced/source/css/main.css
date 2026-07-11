@@ -614,17 +614,45 @@ mark,
   opacity: 1;
 }
 
+/* Fullscreen author section */
+.author {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+/* Arrow at bottom of viewport */
 .scroll-hint {
-  text-align: center;
-  margin: 32px 0 16px;
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 28px;
   color: #aaa;
   animation: bounce 2s infinite;
   cursor: default;
+  z-index: 2;
+}
+.wrapper {
+  position: relative;
 }
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(8px); }
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* Remove focus outlines on clicks */
+a:focus, a:focus-visible, button:focus {
+  outline: none;
+}
+
+/* Hide pagination on homepage */
+.posts-section .pagination {
+  display: none;
 }
 
 .posts-item-note {

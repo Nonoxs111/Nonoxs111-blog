@@ -25,18 +25,12 @@
           <span>Email</span>
         </a>
       </div>
+      <div class="scroll-hint">↓</div>
     </div>
 
     <div class="posts-section">
-      <div class="scroll-hint">↓</div>
       <main aria-label="Content">
         <%-partial('partials/recent-posts')%>
-        <nav class="pagination">
-          <%- paginator({
-            prev_text: '上一页',
-            next_text: '下一页'
-          }) %>
-        </nav>
       </main>
     </div>
   </div>

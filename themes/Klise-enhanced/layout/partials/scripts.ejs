@@ -20,20 +20,14 @@
     });
   </script>
   <script>
-  // Layered blue rain with gradient droplets
+  // Smooth blue rain - performance optimized
   (function() {
     var canvas = document.getElementById('rain-canvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
     var W, H;
     var drops = [];
-
-    // Three layers: far (index 0), mid (1), near (2)
-    var LAYERS = [
-      { count: 60, rMin: 0.5, rMax: 1.5, speedMin: 3,  speedMax: 6,  alphaMin: 0.08, alphaMax: 0.15, sway: 0.3 },
-      { count: 50, rMin: 1.5, rMax: 3.0, speedMin: 6,  speedMax: 10, alphaMin: 0.15, alphaMax: 0.28, sway: 0.6 },
-      { count: 30, rMin: 3.0, rMax: 5.0, speedMin: 8,  speedMax: 14, alphaMin: 0.2,  alphaMax: 0.4,  sway: 1.0 }
-    ];
+    var TOTAL = 90;
 
     function resize() {
       W = canvas.width = window.innerWidth;
@@ -42,81 +36,50 @@
     resize();
     window.addEventListener('resize', resize);
 
-    function randomDrop(layer) {
+    function newDrop() {
       return {
         x: Math.random() * W,
         y: Math.random() * -H,
-        r: layer.rMin + Math.random() * (layer.rMax - layer.rMin),
-        speed: layer.speedMin + Math.random() * (layer.speedMax - layer.speedMin),
-        alpha: layer.alphaMin + Math.random() * (layer.alphaMax - layer.alphaMin),
-        sway: layer.sway,
-        swayOffset: Math.random() * Math.PI * 2
+        w: 1 + Math.random() * 2.2,     // width
+        h: 6 + Math.random() * 14,      // height
+        speed: 1.5 + Math.random() * 2.5, // slow fall
+        alpha: 0.25 + Math.random() * 0.35,
+        swayRate: 0.01 + Math.random() * 0.02,
+        swayAmp: 0.3 + Math.random() * 0.8,
+        swayOff: Math.random() * Math.PI * 2
       };
     }
 
-    LAYERS.forEach(function(layer) {
-      for (var i = 0; i < layer.count; i++) {
-        var d = randomDrop(layer);
-        d.y = Math.random() * H;
-        d._layer = layer;
-        drops.push(d);
-      }
-    });
-
-    function drawDrop(drop) {
-      ctx.save();
-      ctx.translate(drop.x, drop.y);
-      var isDark = document.body.getAttribute('data-theme') === 'dark';
-
-      // Gradient: lighter at top, deeper at bottom
-      var r = drop.r;
-      var topAlpha = drop.alpha * 0.5;
-      var botAlpha = drop.alpha;
-      var gradient = ctx.createLinearGradient(0, -r * 2.5, 0, r);
-      var c1, c2;
-      if (isDark) {
-        c1 = 'rgba(150,210,240,' + topAlpha + ')';
-        c2 = 'rgba(60,140,200,' + botAlpha + ')';
-      } else {
-        c1 = 'rgba(160,215,240,' + topAlpha + ')';
-        c2 = 'rgba(50,120,190,' + botAlpha + ')';
-      }
-      gradient.addColorStop(0, c1);
-      gradient.addColorStop(1, c2);
-
-      ctx.beginPath();
-      // Teardrop shape
-      ctx.moveTo(0, -r * 2.5);
-      ctx.bezierCurveTo(r * 0.8, -r, r * 0.8, r * 0.3, 0, r);
-      ctx.bezierCurveTo(-r * 0.8, r * 0.3, -r * 0.8, -r, 0, -r * 2.5);
-      ctx.closePath();
-      ctx.fillStyle = gradient;
-      ctx.fill();
-
-      // Tiny highlight spot at top
-      ctx.beginPath();
-      ctx.arc(0, -r * 1.5, r * 0.25, 0, Math.PI * 2);
-      ctx.fillStyle = isDark ? 'rgba(200,230,255,' + (drop.alpha * 0.7) + ')' : 'rgba(220,240,255,' + (drop.alpha * 0.7) + ')';
-      ctx.fill();
-
-      ctx.restore();
+    for (var i = 0; i < TOTAL; i++) {
+      var d = newDrop();
+      d.y = Math.random() * H;
+      drops.push(d);
     }
 
     function draw() {
       ctx.clearRect(0, 0, W, H);
+      var isDark = document.body.getAttribute('data-theme') === 'dark';
+      var color = isDark ? '130,195,230' : '70,145,210';
+
       for (var i = 0; i < drops.length; i++) {
-        var drop = drops[i];
-        drop.y += drop.speed;
-        drop.x += Math.sin(drop.swayOffset + drop.y * 0.03) * drop.sway;
-        if (drop.y > H + 30) {
-          var oldLayer = drop._layer;
-          var nd = randomDrop(oldLayer);
-          // Preserve the layer reference
-          nd._layer = oldLayer;
+        var d = drops[i];
+        d.y += d.speed;
+        d.x += Math.sin(d.swayOff + d.y * d.swayRate) * d.swayAmp;
+
+        if (d.y > H + 20) {
+          var nd = newDrop();
+          // inherit position from existing but start from top
           drops[i] = nd;
-          drop = nd;
+          d = nd;
         }
-        drawDrop(drop);
+
+        // Draw elongated rounded drop
+        ctx.fillStyle = 'rgba(' + color + ',' + d.alpha + ')';
+        ctx.beginPath();
+        var rx = d.w / 2;
+        var ry = d.h / 2;
+        ctx.ellipse(d.x, d.y, rx, ry, 0, 0, Math.PI * 2);
+        ctx.fill();
       }
       requestAnimationFrame(draw);
     }
