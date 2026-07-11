@@ -549,12 +549,15 @@ mark,
 }
 
 .author {
-  margin-top: 6.3rem;
-  margin-bottom: 7.2rem;
+  min-height: 100vh;
   text-align: center;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  padding: 80px 0 60px;
 }
 @media screen and (max-width: 768px) {
   .author {
@@ -614,17 +617,17 @@ mark,
   opacity: 1;
 }
 
-/* Arrow fixed at viewport bottom */
+/* Arrow at bottom of hero section */
 .scroll-hint {
-  position: fixed;
-  bottom: 20px;
+  position: absolute;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 28px;
   color: #aaa;
   animation: bounce 2s infinite;
   cursor: default;
-  z-index: 10;
+  z-index: 2;
 }
 @keyframes bounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
