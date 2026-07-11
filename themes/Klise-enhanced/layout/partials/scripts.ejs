@@ -20,14 +20,14 @@
     });
   </script>
   <script>
-  // Smooth blue rain - performance optimized
+  // Blue rain droplet canvas
   (function() {
     var canvas = document.getElementById('rain-canvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
     var W, H;
     var drops = [];
-    var TOTAL = 90;
+    var DROP_COUNT = 80;
 
     function resize() {
       W = canvas.width = window.innerWidth;
@@ -36,50 +36,49 @@
     resize();
     window.addEventListener('resize', resize);
 
-    function newDrop() {
+    function randomDrop() {
       return {
         x: Math.random() * W,
         y: Math.random() * -H,
-        w: 1 + Math.random() * 2.2,     // width
-        h: 6 + Math.random() * 14,      // height
-        speed: 1.5 + Math.random() * 2.5, // slow fall
-        alpha: 0.25 + Math.random() * 0.35,
-        swayRate: 0.01 + Math.random() * 0.02,
-        swayAmp: 0.3 + Math.random() * 0.8,
-        swayOff: Math.random() * Math.PI * 2
+        r: 2 + Math.random() * 4,
+        speed: 6 + Math.random() * 10,
+        opacity: 0.15 + Math.random() * 0.25,
+        sway: (Math.random() - 0.5) * 1.5
       };
     }
 
-    for (var i = 0; i < TOTAL; i++) {
-      var d = newDrop();
+    for (var i = 0; i < DROP_COUNT; i++) {
+      var d = randomDrop();
       d.y = Math.random() * H;
       drops.push(d);
     }
 
+    function drawDrop(drop) {
+      ctx.save();
+      ctx.translate(drop.x, drop.y);
+      ctx.beginPath();
+      // teardrop shape
+      ctx.moveTo(0, -drop.r * 2);
+      ctx.bezierCurveTo(drop.r, -drop.r, drop.r, 0, 0, drop.r);
+      ctx.bezierCurveTo(-drop.r, 0, -drop.r, -drop.r, 0, -drop.r * 2);
+      ctx.closePath();
+      var isDark = document.body.getAttribute('data-theme') === 'dark';
+      var color = isDark ? '100, 180, 220' : '80, 160, 210';
+      ctx.fillStyle = 'rgba(' + color + ',' + drop.opacity + ')';
+      ctx.fill();
+      ctx.restore();
+    }
+
     function draw() {
       ctx.clearRect(0, 0, W, H);
-      var isDark = document.body.getAttribute('data-theme') === 'dark';
-      var color = isDark ? '130,195,230' : '70,145,210';
-
       for (var i = 0; i < drops.length; i++) {
-        var d = drops[i];
-        d.y += d.speed;
-        d.x += Math.sin(d.swayOff + d.y * d.swayRate) * d.swayAmp;
-
-        if (d.y > H + 20) {
-          var nd = newDrop();
-          // inherit position from existing but start from top
-          drops[i] = nd;
-          d = nd;
+        var drop = drops[i];
+        drop.y += drop.speed;
+        drop.x += drop.sway;
+        if (drop.y > H + 20) {
+          drops[i] = randomDrop();
         }
-
-        // Draw elongated rounded drop
-        ctx.fillStyle = 'rgba(' + color + ',' + d.alpha + ')';
-        ctx.beginPath();
-        var rx = d.w / 2;
-        var ry = d.h / 2;
-        ctx.ellipse(d.x, d.y, rx, ry, 0, 0, Math.PI * 2);
-        ctx.fill();
+        drawDrop(drop);
       }
       requestAnimationFrame(draw);
     }

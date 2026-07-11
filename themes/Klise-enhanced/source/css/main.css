@@ -614,31 +614,17 @@ mark,
   opacity: 1;
 }
 
-/* Fullscreen author section */
-.author {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 60px;
-  box-sizing: border-box;
-}
-
-/* Arrow at bottom of viewport */
+/* Arrow fixed at viewport bottom */
 .scroll-hint {
-  position: absolute;
-  bottom: 24px;
+  position: fixed;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 28px;
   color: #aaa;
   animation: bounce 2s infinite;
   cursor: default;
-  z-index: 2;
-}
-.wrapper {
-  position: relative;
+  z-index: 10;
 }
 @keyframes bounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
