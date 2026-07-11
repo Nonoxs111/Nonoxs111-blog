@@ -168,7 +168,7 @@
             <% var url = trim(item[0]); %>
             <% var name = item[1]; %>
             <% var paths = '/'+path.replace('index.html','') %>
-            <a class="menu-link <%=url===paths?'active':''%>" href="<%- url%>"><%=name%></a>
+            <a class="menu-link <%=url===paths?'active':''%>" href="<%- url_for(url) %>"><%=name%></a>
           <% }); %>
         </div>
       </div>
