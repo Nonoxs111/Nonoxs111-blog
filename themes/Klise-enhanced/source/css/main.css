@@ -1294,10 +1294,10 @@ pre .xml .cdata {
 
 @keyframes fadein {
   0% {
-    opacity: 0.2;
+    opacity: 0;
   }
   100% {
-    opacity: 0.8;
+    opacity: 1;
   }
 }
 @keyframes blur {
