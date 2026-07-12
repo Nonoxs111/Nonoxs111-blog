@@ -1297,7 +1297,7 @@ pre .xml .cdata {
     opacity: 0;
   }
   100% {
-    opacity: 0.92;
+    opacity: 0.8;
   }
 }
 @keyframes blur {
