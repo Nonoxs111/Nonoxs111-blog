@@ -407,17 +407,11 @@ mark,
 body[data-theme="dark"] .navbar.scrolled {
   background: rgba(19,20,24,0.65);
 }
-/* Mobile: solid navbar, no transparency */
+/* Mobile: no frosted scroll effect */
 @media screen and (max-width: 768px) {
-  .navbar,
   .navbar.scrolled {
-    background: #fff !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-  }
-  body[data-theme="dark"] .navbar,
-  body[data-theme="dark"] .navbar.scrolled {
-    background: #131418 !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 .navbar .menu {

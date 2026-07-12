@@ -97,23 +97,35 @@
   })();
   </script>
   <script>
-  // Navbar scroll effect - throttled
+  // Navbar scroll effect - mobile gets solid bg, desktop gets scroll frosted
   (function() {
     var navbar = document.querySelector('.navbar');
     if (!navbar) return;
     var isScrolled = false;
     var ticking = false;
+    function isMobile() {
+      return window.innerWidth <= 768;
+    }
     function update() {
       var y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
       var shouldScroll = y > 10;
       if (shouldScroll !== isScrolled) {
         isScrolled = shouldScroll;
-        navbar.classList.toggle('scrolled', shouldScroll);
+        if (isMobile()) {
+          navbar.classList.remove('scrolled');
+        } else {
+          navbar.classList.toggle('scrolled', shouldScroll);
+        }
       }
       ticking = false;
     }
     window.addEventListener('scroll', function() {
       if (!ticking) { requestAnimationFrame(update); ticking = true; }
     }, { passive: true });
+    // Init: mobile gets solid bg
+    if (isMobile()) {
+      navbar.style.background = document.body.getAttribute('data-theme') === 'dark' ? '#131418' : '#fff';
+      navbar.classList.remove('scrolled');
+    }
   })();
   </script>
