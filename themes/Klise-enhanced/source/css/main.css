@@ -389,7 +389,7 @@ mark,
   border: 0;
 }
 
-/* Navbar: solid on mobile, frosted scroll on desktop */
+/* Navbar */
 .navbar {
   height: auto;
   position: fixed;
@@ -398,26 +398,31 @@ mark,
   right: 0;
   z-index: 1000;
   padding: 15px 30px;
-  background: #fff;
+  background: transparent;
+  transition: background 0.3s, backdrop-filter 0.3s;
 }
-body[data-theme="dark"] .navbar {
-  background: #131418;
+.navbar.scrolled {
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
-@media screen and (min-width: 769px) {
+body[data-theme="dark"] .navbar.scrolled {
+  background: rgba(19,20,24,0.65);
+}
+@media screen and (max-width: 768px) {
   .navbar {
-    background: transparent;
-    transition: background 0.3s, backdrop-filter 0.3s;
+    background: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
   .navbar.scrolled {
-    background: rgba(255,255,255,0.65);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: #fff;
   }
   body[data-theme="dark"] .navbar {
-    background: transparent;
+    background: #131418;
   }
   body[data-theme="dark"] .navbar.scrolled {
-    background: rgba(19,20,24,0.65);
+    background: #131418;
   }
 }
 .navbar .menu {
