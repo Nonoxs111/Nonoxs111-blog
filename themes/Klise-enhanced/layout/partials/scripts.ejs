@@ -27,6 +27,9 @@
           link.classList.remove('active');
         }
       });
+      // close mobile menu after navigation
+      var trigger = document.getElementById('menu-trigger');
+      if (trigger) trigger.checked = false;
     });
   </script>
   <script>
