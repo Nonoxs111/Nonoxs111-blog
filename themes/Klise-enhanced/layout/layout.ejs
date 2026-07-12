@@ -5,6 +5,15 @@
   <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css' />
   <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/jhlst/dist/%E4%BA%AC%E8%8F%AF%E8%80%81%E5%AE%8B%E4%BD%93v2_002/result.css' />  
   <%-partial('partials/head')%>
+  <style>
+    @media screen and (max-width: 768px) {
+      .navbar, .navbar.scrolled {
+        background: #fff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+    }
+  </style>
 
 <script defer>
   document.addEventListener('visibilitychange', function () {
