@@ -101,12 +101,15 @@
   (function() {
     var navbar = document.querySelector('.navbar');
     if (!navbar) return;
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > 10) {
+    function onScroll() {
+      var y = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+      if (y > 10) {
         navbar.classList.add('scrolled');
       } else {
         navbar.classList.remove('scrolled');
       }
-    });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('scroll', onScroll, { passive: true });
   })();
   </script>
