@@ -97,23 +97,23 @@
   })();
   </script>
   <script>
-  // Navbar scroll effect
+  // Navbar scroll effect - throttled
   (function() {
     var navbar = document.querySelector('.navbar');
     if (!navbar) return;
+    var isScrolled = false;
     var ticking = false;
     function update() {
       var y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
-      if (y > 10) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
+      var shouldScroll = y > 10;
+      if (shouldScroll !== isScrolled) {
+        isScrolled = shouldScroll;
+        navbar.classList.toggle('scrolled', shouldScroll);
       }
       ticking = false;
     }
     window.addEventListener('scroll', function() {
       if (!ticking) { requestAnimationFrame(update); ticking = true; }
     }, { passive: true });
-    update();
   })();
   </script>
