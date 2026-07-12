@@ -407,12 +407,18 @@ mark,
 body[data-theme="dark"] .navbar.scrolled {
   background: rgba(19,20,24,0.65);
 }
-/* Mobile: keep navbar always transparent, no scrolled effect */
+/* Mobile: solid navbar, no transparency */
 @media screen and (max-width: 768px) {
+  .navbar {
+    background: #fff;
+  }
   .navbar.scrolled {
-    background: transparent;
+    background: #fff;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+  }
+  body[data-theme="dark"] .navbar {
+    background: #131418;
   }
 }
 .navbar .menu {
