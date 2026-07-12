@@ -1,10 +1,19 @@
 ---
-title: 关于
+title: ''
 date: 2026-07-11 17:11:52
 layout: page
 ---
 
 <style>
+  .header-title { display: none; }
+  .intro {
+    max-width: 620px;
+    margin: 0 auto 40px;
+    font-size: 1.05em;
+    line-height: 2;
+    text-align: center;
+    opacity: 0.9;
+  }
   .resume-card {
     background: rgba(255,255,255,0.15);
     backdrop-filter: blur(12px);
@@ -119,6 +128,10 @@ layout: page
     background: rgba(140,190,230,0.7);
   }
 </style>
+
+<div class="intro">
+  你好呀，我是 Nonoxs。软件工程在读，喜欢看书，也喜欢写代码。对前端技术有持续的热情，享受把一个页面从粗糙打磨到流畅适配的过程。保持对新技术的好奇，也关注手里的电子设备怎么变得更好用。工作之外，喜欢看一些国外品牌的时装秀，在穿搭上花一点小心思；喜欢俄罗斯文化，正在学习俄语；也在练习写花体字——不精通但乐在其中！
+</div>
 
 <div class="resume-card">
 
