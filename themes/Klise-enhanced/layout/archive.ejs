@@ -10,7 +10,10 @@ const archivesList = list_archives({ show_count: false });
     <header class="header">
       <h1 class="header-title center">Archives</h1>
     </header>
-    <div class="archive-container">    
+    <div class="archive-search">
+      <input type="text" id="archive-search-input" placeholder="搜索文章...">
+    </div>
+    <div class="archive-container">
       <%
       // 获取文章列表
       let posts = [];
@@ -82,26 +85,30 @@ const archivesList = list_archives({ show_count: false });
         <% }); %>
       </div>
     </div>
-      <nav class="pagination">
-        <%- paginator({
-          prev_text: '上一页',  // 上一页按钮文字
-          next_text: '下一页'   // 下一页按钮文字
-        }) %>
-      </nav>
     </main>
   </div>
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const yearToggles = document.querySelectorAll('.year-toggle');
-      
-      yearToggles.forEach(toggle => {
-        toggle.addEventListener('click', function() {
-          const year = this.dataset.year;
-          const content = document.querySelector(`.year-content[data-year="${year}"]`);
-          content.classList.toggle('collapsed');
-          this.textContent = content.classList.contains('collapsed') ? '展开' : '折叠';
+      var input = document.getElementById('archive-search-input');
+      if (!input) return;
+      input.addEventListener('input', function() {
+        var q = this.value.toLowerCase().trim();
+        var groups = document.querySelectorAll('.archive-month-group');
+        groups.forEach(function(group) {
+          var items = group.querySelectorAll('.archive-post-item');
+          var hasMatch = false;
+          items.forEach(function(item) {
+            var text = item.textContent.toLowerCase();
+            if (!q || text.indexOf(q) > -1) {
+              item.style.display = '';
+              hasMatch = true;
+            } else {
+              item.style.display = 'none';
+            }
+          });
+          group.style.display = hasMatch ? '' : 'none';
         });
       });
     });
-    </script>
+  </script>
