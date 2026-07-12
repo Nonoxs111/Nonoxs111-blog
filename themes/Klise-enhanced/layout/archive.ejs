@@ -8,10 +8,10 @@ const archivesList = list_archives({ show_count: false });
   <div class="wrapper">
     <main class="page-content">
     <header class="header">
-      <h1 class="header-title center">Archives</h1>
+      <h1 class="header-title center">档案馆</h1>
     </header>
     <div class="archive-search">
-      <input type="text" id="archive-search-input" placeholder="搜索文章...">
+      <input type="text" id="archive-search-input" placeholder="搜索文章">
     </div>
     <div class="archive-container">
       <%
@@ -89,7 +89,7 @@ const archivesList = list_archives({ show_count: false });
   </div>
   
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    (function() {
       var input = document.getElementById('archive-search-input');
       if (!input) return;
       input.addEventListener('input', function() {
@@ -110,5 +110,5 @@ const archivesList = list_archives({ show_count: false });
           group.style.display = hasMatch ? '' : 'none';
         });
       });
-    });
+    })();
   </script>
