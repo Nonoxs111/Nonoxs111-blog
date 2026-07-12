@@ -405,19 +405,28 @@ body[data-theme="dark"] .navbar {
 }
 @media screen and (min-width: 769px) {
   .navbar {
-    background: transparent;
+    background: transparent !important;
     transition: background 0.3s, backdrop-filter 0.3s;
   }
   .navbar.scrolled {
-    background: rgba(255,255,255,0.65);
+    background: rgba(255,255,255,0.65) !important;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
   body[data-theme="dark"] .navbar {
-    background: transparent;
+    background: transparent !important;
   }
   body[data-theme="dark"] .navbar.scrolled {
-    background: rgba(19,20,24,0.65);
+    background: rgba(19,20,24,0.65) !important;
+  }
+}
+/* Mobile dark mode */
+body[data-theme="dark"] .navbar {
+  background: #131418 !important;
+}
+@media screen and (min-width: 769px) {
+  body[data-theme="dark"] .navbar {
+    background: transparent !important;
   }
 }
 .navbar .menu {
