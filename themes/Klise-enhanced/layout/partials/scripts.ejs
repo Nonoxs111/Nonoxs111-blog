@@ -17,6 +17,16 @@
         if (langName === 'plain' || langName === undefined) langName = 'Code';
         item.setAttribute('data-lang', langName);
       });
+      // update active menu link
+      var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+      document.querySelectorAll('.menu-link').forEach(function(link) {
+        var href = link.getAttribute('href').replace(/\/$/, '') || '/';
+        if (href === currentPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
     });
   </script>
   <script>
