@@ -6,13 +6,40 @@ layout: page
 
 <style>
   .header-title { display: none; }
-  .intro {
-    max-width: 620px;
-    margin: 0 auto 40px;
+  .intro-card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 16px;
+    padding: 36px 32px 30px;
+    max-width: 780px;
+    margin: 0 auto 36px;
+    position: relative;
+  }
+  .intro-card .intro-label {
+    position: absolute;
+    top: -13px;
+    left: 22px;
+    font-size: 1em;
+    font-weight: 700;
+    padding: 2px 14px;
+    border-radius: 7px;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .intro-card .intro-text {
     font-size: 1.05em;
     line-height: 2;
-    text-align: center;
     opacity: 0.9;
+  }
+  body[data-theme="dark"] .intro-card {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
+  }
+  body[data-theme="dark"] .intro-card .intro-label {
+    background: rgba(255,255,255,0.12);
   }
   .resume-card {
     background: rgba(255,255,255,0.15);
@@ -129,8 +156,9 @@ layout: page
   }
 </style>
 
-<div class="intro">
-  你好呀，我是 Nonoxs。软件工程在读，喜欢看书，也喜欢写代码。对前端技术有持续的热情，享受把一个页面从粗糙打磨到流畅适配的过程。保持对新技术的好奇，也关注手里的电子设备怎么变得更好用。工作之外，喜欢看一些国外品牌的时装秀，在穿搭上花一点小心思；喜欢俄罗斯文化，正在学习俄语；也在练习写花体字——不精通但乐在其中！
+<div class="intro-card">
+  <span class="intro-label">关于我</span>
+  <div class="intro-text">你好呀，我是 Nonoxs！软件工程在读，喜欢看书，也喜欢写代码。对前端技术有持续的热情，享受把一个页面从粗糙打磨到流畅适配的过程。保持对前沿技术的好奇，也关注手里的电子设备怎么变得更好用。工作之外，喜欢看一些国外品牌的时装秀，在穿搭上花一点小心思；喜欢俄罗斯文化，正在学习俄语；也在练习写花体字。闲暇偶尔去滑板、爬山、攀岩、游泳——不精通但乐在其中；也喜欢旅游，去不同的城市走走停停，看看当地的风景，感受不一样的人文和生活气息。</div>
 </div>
 
 <div class="resume-card">
