@@ -395,8 +395,10 @@ mark,
   left: 0;
   right: 0;
   z-index: 1000;
-  background: #fff;
-  border-bottom: 1px solid #ececec;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
   padding: 15px 30px;
 }
 .navbar .menu {
@@ -404,8 +406,8 @@ mark,
   margin: 0 auto;
 }
 body[data-theme="dark"] .navbar {
-  background: #131418;
-  border-color: rgba(255,255,255,0.08);
+  background: rgba(19,20,24,0.7);
+  border-color: rgba(255,255,255,0.06);
 }
 
 /* Archive search box */
