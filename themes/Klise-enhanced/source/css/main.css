@@ -24,7 +24,7 @@
 .author-bio { animation-delay: 0.15s; }
 
 #pjax-container {
-  flex: 1;
+  min-height: calc(100vh - 200px);
   position: relative;
   z-index: 1;
 }
@@ -103,8 +103,6 @@ body ,body[data-theme=dark]{
   overflow-x: hidden;
   position: relative;
   padding-top: 60px;
-  display: flex;
-  flex-direction: column;
   
   /*background: #fff;*/
   font: 500 18px/1.85 "KingHwa_OldSong",lato, Helvetica Neue For Number, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, "LXGW Neo ZhiSong","Microsoft JhengHei", "MicrMicrosoft YaHei", Helvetica Neue, Helvetica, Arial, sans-serif;
