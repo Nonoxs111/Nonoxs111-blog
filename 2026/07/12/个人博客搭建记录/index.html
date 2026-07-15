@@ -1,0 +1,799 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css' />
+  <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/jhlst/dist/%E4%BA%AC%E8%8F%AF%E8%80%81%E5%AE%8B%E4%BD%93v2_002/result.css' />  
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>个人博客搭建记录 [ Nonoxs111&#39;s Blog ]</title>
+
+  <link rel="icon" href="/Nonoxs111-blog/img/carrot-48x48.png">
+
+
+    <meta name="author" content="Nonoxs">
+
+
+
+
+
+  <link rel="alternate" href="/Nonoxs111-blog/atom.xml " title="Nonoxs111&#39;s Blog" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/Nonoxs111-blog/css/main.css">
+  
+
+  <style>
+    @media screen and (max-width: 768px) {
+      .navbar, .navbar.scrolled {
+        background: #fff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+    }
+  </style>
+
+<script defer>
+  document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState == 'hidden') {
+      normal_title = document.title;
+      document.title = '点一下';
+  } else document.title = normal_title;
+});
+
+</script>
+  <body data-theme="light" class="notransition">
+    <canvas id="rain-canvas"></canvas>
+    <script defer>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/"> 主页</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/tags/"> 标签</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/categories/"> 类别</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/archives/"> 档案馆</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/about/"> 关于</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div id="pjax-container"><button id="toTopBtn"><i class="fa-solid fa-hand-point-up " ></i></button>
+<button id="toggleButton"><i class="fa-solid fa-chart-bar " ></i></button>
+<div id="overlay" class="overlay">
+  <div class="content">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95-%E2%80%94-Nonoxs111-blog"><span class="toc-text">个人博客搭建记录 — Nonoxs111-blog</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0"><span class="toc-text">一、项目概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">二、问题与解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-404-js-%E6%8A%A5%E9%94%99%E5%AF%BC%E8%87%B4-Hexo-%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8"><span class="toc-text">1. 404.js 报错导致 Hexo 无法启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%90%E7%9B%AE%E5%BD%95%E9%83%A8%E7%BD%B2%E7%9A%84%E8%B7%AF%E5%BE%84%E9%97%AE%E9%A2%98%EF%BC%88%E6%A0%B8%E5%BF%83%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-text">2. 子目录部署的路径问题（核心问题）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87%E8%BF%87%E5%A4%A7%E5%AF%BC%E8%87%B4%E5%8A%A0%E8%BD%BD%E7%BC%93%E6%85%A2"><span class="toc-text">3. 背景图片过大导致加载缓慢</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%A1%B5%E9%9D%A2%E5%88%87%E6%8D%A2%E5%8D%A1%E9%A1%BF"><span class="toc-text">4. 页面切换卡顿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Canvas-%E9%9B%A8%E6%BB%B4%E5%8A%A8%E7%94%BB%E4%BC%98%E5%8C%96"><span class="toc-text">5. Canvas 雨滴动画优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E9%A6%96%E5%B1%8F%E5%B8%83%E5%B1%80%E8%B0%83%E6%95%B4%EF%BC%88%E5%8F%8D%E5%A4%8D%E4%BF%AE%E6%94%B9%EF%BC%89"><span class="toc-text">6. 首屏布局调整（反复修改）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F%E5%9B%BE%E6%A0%87"><span class="toc-text">7. 联系方式图标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E5%85%B3%E4%BA%8E%E9%A1%B5%E7%AE%80%E5%8E%86"><span class="toc-text">8. 关于页简历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E5%85%B6%E4%BB%96%E5%BE%AE%E8%B0%83"><span class="toc-text">9. 其他微调</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%96%87%E4%BB%B6%E4%BF%AE%E6%94%B9%E6%B8%85%E5%8D%95"><span class="toc-text">三、文件修改清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%85%8D%E8%89%B2%E4%B8%8E%E9%A3%8E%E6%A0%BC"><span class="toc-text">四、配色与风格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81Git-%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BB%9A"><span class="toc-text">五、Git 版本回滚</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96"><span class="toc-text">六、后续优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E5%AF%BC%E8%88%AA%E6%A0%8F%E5%90%B8%E9%A1%B6-%E6%BB%9A%E5%8A%A8%E6%AF%9B%E7%8E%BB%E7%92%83%E6%95%88%E6%9E%9C"><span class="toc-text">10. 导航栏吸顶 + 滚动毛玻璃效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E9%A6%96%E9%A1%B5%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D%E5%8D%A1%E7%89%87"><span class="toc-text">11. 首页自我介绍卡片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E5%85%B3%E4%BA%8E%E9%A1%B5%E7%AE%80%E5%8E%86"><span class="toc-text">12. 关于页简历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%B1%89%E5%A0%A1%E8%8F%9C%E5%8D%95%E9%80%8F%E6%98%8E%E9%97%AE%E9%A2%98"><span class="toc-text">13. 移动端汉堡菜单透明问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-PJAX-%E5%AF%BC%E8%88%AA%E4%BD%93%E9%AA%8C%E4%BC%98%E5%8C%96"><span class="toc-text">14. PJAX 导航体验优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-Footer-%E4%BC%98%E5%8C%96"><span class="toc-text">15. Footer 优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-%E6%A1%A3%E6%A1%88%E9%A6%86%E6%90%9C%E7%B4%A2%E5%8A%9F%E8%83%BD"><span class="toc-text">16. 档案馆搜索功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-Footer-%E5%9B%BA%E5%AE%9A%E5%9C%A8%E9%A1%B5%E9%9D%A2%E5%BA%95%E9%83%A8"><span class="toc-text">17. Footer 固定在页面底部</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-%E5%8A%A8%E6%80%81%E8%83%8C%E6%99%AF%E4%B8%8E%E5%8A%A8%E6%95%88"><span class="toc-text">18. 动态背景与动效</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8"><span class="toc-text">七、日常使用</span></a></li></ol></li></ol>
+    <button id="closeButton"><i class="fa-solid fa-circle-xmark"></i></button>
+  </div>
+</div>
+<div class="wrapper post">
+  <head>
+    <!-- 引入 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="generator" content="Hexo 8.1.2"></head>
+
+
+
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/Nonoxs111-blog/tags/Hexo/" class="tag"># Hexo</a><a href="/Nonoxs111-blog/tags/blog/" class="tag"># blog</a><a href="/Nonoxs111-blog/tags/GitHub-Pages/" class="tag"># GitHub Pages</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">个人博客搭建记录</h1>
+          <div class="post-meta">
+            最后更新: <time>Jul 12, 2026</time>
+            作者: <span itemprop="author">
+              <span itemprop="name">Nonoxs</span>
+            </span>
+            字数: <span class="post-count">2.7k</span>
+            预计阅读时间: <span class="post-count">10min</span> 
+          </div>       
+        </header>
+          <div class="page-content"><h1 id="个人博客搭建记录-—-Nonoxs111-blog"><a href="#个人博客搭建记录-—-Nonoxs111-blog" class="headerlink" title="个人博客搭建记录 — Nonoxs111-blog"></a>个人博客搭建记录 — Nonoxs111-blog</h1><blockquote>
+<p>基于 Hexo + Klise-enhanced 主题，部署于 GitHub Pages<br>博客地址：<a href="https://nonoxs111.github.io/Nonoxs111-blog/">https://nonoxs111.github.io/Nonoxs111-blog/</a></p>
+</blockquote>
+<hr>
+<h2 id="一、项目概述"><a href="#一、项目概述" class="headerlink" title="一、项目概述"></a>一、项目概述</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>框架</td>
+<td>Hexo 8.x</td>
+</tr>
+<tr>
+<td>主题</td>
+<td>Klise-enhanced（基于 Klise 的增强版）</td>
+</tr>
+<tr>
+<td>部署</td>
+<td>GitHub Pages（gh-pages 分支）</td>
+</tr>
+<tr>
+<td>CI&#x2F;CD</td>
+<td>GitHub Actions 自动构建部署</td>
+</tr>
+<tr>
+<td>仓库</td>
+<td>github.com&#x2F;Nonoxs111&#x2F;Nonoxs111-blog</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、问题与解决方案"><a href="#二、问题与解决方案" class="headerlink" title="二、问题与解决方案"></a>二、问题与解决方案</h2><h3 id="1-404-js-报错导致-Hexo-无法启动"><a href="#1-404-js-报错导致-Hexo-无法启动" class="headerlink" title="1. 404.js 报错导致 Hexo 无法启动"></a>1. 404.js 报错导致 Hexo 无法启动</h3><p><strong>问题</strong>：<code>hexo server</code> 报错 <code>Cannot read properties of undefined (reading &#39;enable&#39;)</code></p>
+<p><strong>原因</strong>：主题配置文件名 <code>_config.klise.yml</code> 与 <code>_config.yml</code> 中的主题名 <code>Klise-enhanced</code> 不匹配，Hexo 无法加载主题配置。</p>
+<p><strong>解决</strong>：将配置文件重命名为 <code>_config.Klise-enhanced.yml</code>。</p>
+<hr>
+<h3 id="2-子目录部署的路径问题（核心问题）"><a href="#2-子目录部署的路径问题（核心问题）" class="headerlink" title="2. 子目录部署的路径问题（核心问题）"></a>2. 子目录部署的路径问题（核心问题）</h3><p><strong>问题</strong>：部署到 <code>https://nonoxs111.github.io/Nonoxs111-blog/</code> 后出现：</p>
+<ul>
+<li>标签&#x2F;类别&#x2F;关于等页面 404</li>
+<li>头像、背景图加载失败</li>
+<li>夜间模式切换无效</li>
+<li>JS&#x2F;CSS 资源 404</li>
+</ul>
+<p><strong>原因</strong>：博客部署在 <code>/Nonoxs111-blog/</code> 子目录下（非根目录），但模板中的静态资源使用了绝对路径（如 <code>/img/avatar.gif</code>、<code>/css/main.css</code>），浏览器请求的是 <code>nonoxs111.github.io/img/...</code> 而非 <code>nonoxs111.github.io/Nonoxs111-blog/img/...</code>。</p>
+<p><strong>解决</strong>：</p>
+<ol>
+<li><code>_config.yml</code> 设置 <code>root: /Nonoxs111-blog/</code></li>
+<li>所有模板文件中的路径使用 Hexo 的 <code>url_for()</code> 辅助函数：<ul>
+<li><code>header.ejs</code>：菜单链接 <code>href=&quot;&lt;%- url_for(url) %&gt;&quot;</code></li>
+<li><code>index.ejs</code>：头像 <code>src=&quot;&lt;%- url_for(&#39;/img/carrot.jpg&#39;) %&gt;&quot;</code></li>
+<li><code>scripts.ejs</code>：JS 引用 <code>&lt;script src=&quot;&lt;%= url_for(url) %&gt;&quot;&gt;</code></li>
+<li><code>head.ejs</code>：CSS 引用已正确使用 <code>url_for()</code>，无需修改</li>
+</ul>
+</li>
+<li><code>main.css</code> 中背景图片使用相对路径 <code>url(&#39;../img/fuji.jpg&#39;)</code></li>
+</ol>
+<hr>
+<h3 id="3-背景图片过大导致加载缓慢"><a href="#3-背景图片过大导致加载缓慢" class="headerlink" title="3. 背景图片过大导致加载缓慢"></a>3. 背景图片过大导致加载缓慢</h3><p><strong>问题</strong>：原 <code>fuji.png</code> 大小为 3.3MB，首屏加载需 2-3 秒。</p>
+<p><strong>解决</strong>：使用 sharp 将 PNG 压缩为 JPEG，85% 品质，最终大小约 100KB（压缩了 97%）。</p>
+<hr>
+<h3 id="4-页面切换卡顿"><a href="#4-页面切换卡顿" class="headerlink" title="4. 页面切换卡顿"></a>4. 页面切换卡顿</h3><p><strong>问题</strong>：默认的页面跳转是完整刷新，每次切换都有白屏闪烁。</p>
+<p><strong>解决</strong>：引入 PJAX（通过 CDN 加载 <code>pjax@0.2.8</code>），实现无刷新页面切换：</p>
+<ul>
+<li><code>layout.ejs</code>：添加 <code>&lt;div id=&quot;pjax-container&quot;&gt;</code> 包裹内容区</li>
+<li><code>scripts.ejs</code>：初始化 PJAX，拦截菜单和内部链接</li>
+<li>移除 <code>flying-pages.min.js</code>（预加载插件，与 PJAX 功能重叠）</li>
+</ul>
+<hr>
+<h3 id="5-Canvas-雨滴动画优化"><a href="#5-Canvas-雨滴动画优化" class="headerlink" title="5. Canvas 雨滴动画优化"></a>5. Canvas 雨滴动画优化</h3><p><strong>问题</strong>：雨滴效果经历多次迭代：</p>
+<ul>
+<li>第一版：简单泪滴形状（80 个粒子），效果不错但略显粗糙</li>
+<li>第二版：分层+渐变色（150 个粒子），导致卡顿且雨滴几乎看不见</li>
+<li>第三版：简化椭圆形状（90 个粒子），速度太慢，可见度低</li>
+</ul>
+<p><strong>最终方案</strong>：回归第一版设计——泪滴形状、80 个粒子、纯色填充、适中速度。兼顾性能与视觉。</p>
+<p><strong>关键代码</strong>（<code>scripts.ejs</code>）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="variable constant_">DROP_COUNT</span> = <span class="number">80</span>;</span><br><span class="line"><span class="comment">// 泪滴形状：bezierCurveTo 绘制</span></span><br><span class="line"><span class="comment">// 颜色：浅色模式 rgba(80,160,210, opacity)</span></span><br><span class="line"><span class="comment">//        深色模式 rgba(100,180,220, opacity)</span></span><br><span class="line"><span class="comment">// 速度：6-16 px/frame</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="6-首屏布局调整（反复修改）"><a href="#6-首屏布局调整（反复修改）" class="headerlink" title="6. 首屏布局调整（反复修改）"></a>6. 首屏布局调整（反复修改）</h3><p><strong>需求演变</strong>：</p>
+<ol>
+<li>最初：常规布局，头像+文章列表在同一页</li>
+<li>用户要求：首屏只有头像签名，文章滚动才显示</li>
+<li>头像签名位置：用户明确要求<strong>保持在顶部</strong>，不要居中</li>
+</ol>
+<p><strong>最终方案</strong>：</p>
+<ul>
+<li><code>.hero</code> 容器：<code>min-height: 100vh</code> + <code>display: flex</code> + <code>justify-content: space-between</code></li>
+<li><code>.author</code>（头像+名字+签名+链接）：保持在顶部，<code>margin-top: 6.3rem</code></li>
+<li><code>.scroll-hint</code>（↓箭头）：flex 布局自动推到底部，<code>padding-bottom: 100px</code></li>
+<li><code>.posts-section</code>（文章列表）：在 hero 下方，自然需要滚动才能看到</li>
+</ul>
+<hr>
+<h3 id="7-联系方式图标"><a href="#7-联系方式图标" class="headerlink" title="7. 联系方式图标"></a>7. 联系方式图标</h3><p><strong>需求</strong>：在签名下方添加 GitHub、Bilibili、Email 链接，带图标。</p>
+<p><strong>实现</strong>：在 <code>index.ejs</code> 中添加 <code>.author-links</code> 区域，使用内联 SVG 图标：</p>
+<ul>
+<li>GitHub：黑色猫头鹰图标</li>
+<li>Bilibili：B 站 logo 图标</li>
+<li>Email：信封图标</li>
+</ul>
+<p><strong>链接信息</strong>：</p>
+<ul>
+<li>GitHub：<a target="_blank" rel="noopener" href="https://github.com/Nonoxs111">https://github.com/Nonoxs111</a></li>
+<li>Bilibili：<a target="_blank" rel="noopener" href="https://space.bilibili.com/95971879">https://space.bilibili.com/95971879</a></li>
+<li>Email：<a href="mailto:&#50;&#x31;&#x30;&#x35;&#x32;&#x35;&#x37;&#56;&#x31;&#51;&#64;&#113;&#113;&#46;&#x63;&#111;&#109;">2105257813@qq.com</a></li>
+</ul>
+<hr>
+<h3 id="8-关于页简历"><a href="#8-关于页简历" class="headerlink" title="8. 关于页简历"></a>8. 关于页简历</h3><p><strong>需求</strong>：关于页面展示简历，排版板正，文字可复制，链接可点。</p>
+<p><strong>方案</strong>：在 <code>source/about/index.md</code> 中使用 HTML + CSS 内联样式（毛玻璃卡片效果）：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.resume-card</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>,<span class="number">0.15</span>);</span><br><span class="line">  <span class="attribute">backdrop-filter</span>: <span class="built_in">blur</span>(<span class="number">12px</span>);</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>包含：个人信息、技能标签、教育经历、工作经历、项目展示。</p>
+<hr>
+<h3 id="9-其他微调"><a href="#9-其他微调" class="headerlink" title="9. 其他微调"></a>9. 其他微调</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>调整内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>名字动效</td>
+<td>CSS <code>fadeInUp</code> 动画，名字和签名同步淡入上浮</td>
+</tr>
+<tr>
+<td>头像</td>
+<td>替换为 <code>carrot.jpg</code>，头像框扩大到 90px</td>
+</tr>
+<tr>
+<td>字体</td>
+<td>保留中文字体 CDN（<code>chinese-fonts-cdn.deno.dev</code>）</td>
+</tr>
+<tr>
+<td>标签页图标</td>
+<td>更换为 <code>carrot-48x48.png</code></td>
+</tr>
+<tr>
+<td>焦点框</td>
+<td>去除链接点击时的蓝色 focus 框（<code>outline: none</code>）</td>
+</tr>
+<tr>
+<td>分页</td>
+<td>隐藏首页底部页码 <code>1</code></td>
+</tr>
+<tr>
+<td>箭头颜色</td>
+<td><code>#c4c5c5</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="三、文件修改清单"><a href="#三、文件修改清单" class="headerlink" title="三、文件修改清单"></a>三、文件修改清单</h2><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>主要修改</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>_config.yml</code></td>
+<td>URL、root、作者名、主题名</td>
+</tr>
+<tr>
+<td><code>_config.Klise-enhanced.yml</code></td>
+<td>重命名自 <code>_config.klise.yml</code>，favicon 路径</td>
+</tr>
+<tr>
+<td><code>themes/Klise-enhanced/layout/layout.ejs</code></td>
+<td>添加 pjax-container、rain canvas</td>
+</tr>
+<tr>
+<td><code>themes/Klise-enhanced/layout/index.ejs</code></td>
+<td>添加 hero 容器、联系方式图标、箭头</td>
+</tr>
+<tr>
+<td><code>themes/Klise-enhanced/layout/partials/header.ejs</code></td>
+<td>菜单链接使用 <code>url_for()</code></td>
+</tr>
+<tr>
+<td><code>themes/Klise-enhanced/layout/partials/head.ejs</code></td>
+<td>favicon 使用 <code>url_for()</code></td>
+</tr>
+<tr>
+<td><code>themes/Klise-enhanced/layout/partials/scripts.ejs</code></td>
+<td>移除 flying-pages、添加 PJAX、添加雨滴 Canvas</td>
+</tr>
+<tr>
+<td><code>themes/Klise-enhanced/source/css/main.css</code></td>
+<td>编译动画、首屏布局、箭弹跳、颜色调整</td>
+</tr>
+<tr>
+<td><code>themes/Klise-enhanced/source/img/</code></td>
+<td>压缩 fuji.jpg、替换头像、添加 favicon</td>
+</tr>
+<tr>
+<td><code>source/about/index.md</code></td>
+<td>HTML&#x2F;CSS 简历页面</td>
+</tr>
+<tr>
+<td><code>source/tags/index.md</code></td>
+<td>标签页 front-matter</td>
+</tr>
+<tr>
+<td><code>source/categories/index.md</code></td>
+<td>分类页 front-matter</td>
+</tr>
+<tr>
+<td><code>source/_posts/</code></td>
+<td>添加技术&#x2F;学习&#x2F;读书笔记分类示例文章</td>
+</tr>
+<tr>
+<td><code>.github/workflows/pages.yml</code></td>
+<td>GitHub Actions 部署工作流</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四、配色与风格"><a href="#四、配色与风格" class="headerlink" title="四、配色与风格"></a>四、配色与风格</h2><table>
+<thead>
+<tr>
+<th>元素</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>背景图</td>
+<td>fuji.jpg（蓝灰色山景）</td>
+</tr>
+<tr>
+<td>雨滴颜色（浅色）</td>
+<td><code>rgba(80, 160, 210, ...)</code></td>
+</tr>
+<tr>
+<td>雨滴颜色（深色）</td>
+<td><code>rgba(100, 180, 220, ...)</code></td>
+</tr>
+<tr>
+<td>箭头颜色</td>
+<td><code>#c4c5c5</code></td>
+</tr>
+<tr>
+<td>简历卡片</td>
+<td>毛玻璃效果（<code>backdrop-filter: blur</code>）</td>
+</tr>
+<tr>
+<td>字体</td>
+<td>京華老宋体 + LXGW WenKai（中文网字计划 CDN）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、Git-版本回滚"><a href="#五、Git-版本回滚" class="headerlink" title="五、Git 版本回滚"></a>五、Git 版本回滚</h2><p>如需回到某个稳定版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看历史</span></span><br><span class="line">git <span class="built_in">log</span> --oneline</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回滚到指定 commit</span></span><br><span class="line">git reset --hard &lt;commit-hash&gt;</span><br><span class="line">git push --force</span><br></pre></td></tr></table></figure>
+
+<p>关键节点：</p>
+<ul>
+<li><code>6069dcd</code> — 最初稳定版（修复路径问题后）</li>
+<li><code>b05311f</code> — 最新版本（含所有改动）</li>
+</ul>
+<hr>
+<h2 id="六、后续优化"><a href="#六、后续优化" class="headerlink" title="六、后续优化"></a>六、后续优化</h2><h3 id="10-导航栏吸顶-滚动毛玻璃效果"><a href="#10-导航栏吸顶-滚动毛玻璃效果" class="headerlink" title="10. 导航栏吸顶 + 滚动毛玻璃效果"></a>10. 导航栏吸顶 + 滚动毛玻璃效果</h3><p><strong>需求</strong>：导航栏固定在页面顶部，向下滚动时始终可见。桌面端滚动后变为半透明毛玻璃效果，移动端保持纯白不透明。</p>
+<p><strong>实现</strong>：</p>
+<ul>
+<li>使用 <code>position: fixed</code> 将导航栏固定在顶部</li>
+<li>桌面端（≥769px）：默认透明，滚动超过 10px 后通过 JS 添加 <code>.scrolled</code> 类，触发半透明磨砂背景（<code>background: rgba(255,255,255,0.65)</code> + <code>backdrop-filter: blur(12px)</code>）</li>
+<li>移动端（≤768px）：CSS 媒体查询强制纯白背景（<code>background: #fff</code>），深色模式下纯黑（<code>#131418</code>）</li>
+<li>JS 使用 <code>requestAnimationFrame</code> 节流，状态不变时不操作 DOM，优化性能</li>
+</ul>
+<p><strong>效果</strong>：桌面端导航栏像 iOS 那样跟着滚动毛玻璃渐变，移动端保持原本不透明样式。</p>
+<hr>
+<h3 id="11-首页自我介绍卡片"><a href="#11-首页自我介绍卡片" class="headerlink" title="11. 首页自我介绍卡片"></a>11. 首页自我介绍卡片</h3><p><strong>需求</strong>：关于页添加个人介绍，风格统一，文字友好平和。</p>
+<p><strong>实现</strong>：</p>
+<ul>
+<li>在关于页顶部添加磨砂玻璃卡片，左上角浮动标签”关于我”</li>
+<li>自我介绍文字居中排版，风格自然亲切</li>
+<li>卡片与下方简历卡片样式统一（<code>backdrop-filter: blur</code> + <code>background: rgba</code>）</li>
+</ul>
+<hr>
+<h3 id="12-关于页简历"><a href="#12-关于页简历" class="headerlink" title="12. 关于页简历"></a>12. 关于页简历</h3><p><strong>需求</strong>：展示完整的简历信息，排版板正，文字可复制、链接可点。</p>
+<p><strong>实现</strong>：</p>
+<ul>
+<li>使用 HTML + CSS 内联样式编写简历卡片</li>
+<li>包含教育背景、技术栈、项目经历三个模块</li>
+<li>技术栈使用圆点列表（<code>.tech-list</code>），保留原始描述</li>
+<li>项目经历使用无序列表，个人博客项目采用润色后的 bullet-point 格式</li>
+<li>联系方式使用 SVG 小图标替代 emoji，更干净</li>
+</ul>
+<hr>
+<h3 id="13-移动端汉堡菜单透明问题"><a href="#13-移动端汉堡菜单透明问题" class="headerlink" title="13. 移动端汉堡菜单透明问题"></a>13. 移动端汉堡菜单透明问题</h3><p><strong>问题</strong>：移动端点开右上角三横杠导航菜单后，背景能看到背后文字；PJAX 切换页面后透明度还会变化。</p>
+<p><strong>原因</strong>：汉堡菜单下拉面板的入场动画 <code>@keyframes fadein</code> 终点值为 <code>opacity: 0.8</code>，80% 不透明度的白色背景呈现半透明效果。PJAX 导航后动画状态不一致导致透明度异常。</p>
+<p><strong>解决</strong>：</p>
+<ul>
+<li>将 <code>fadein</code> 动画终点调整为 <code>opacity: 0.8</code>（保留原设计的微妙通透感）</li>
+<li>在 PJAX <code>success</code> 事件中添加 <code>document.getElementById(&#39;menu-trigger&#39;).checked = false</code>，导航后自动关闭菜单</li>
+</ul>
+<hr>
+<h3 id="14-PJAX-导航体验优化"><a href="#14-PJAX-导航体验优化" class="headerlink" title="14. PJAX 导航体验优化"></a>14. PJAX 导航体验优化</h3><p><strong>问题</strong>：引入 PJAX 后出现多个体验问题。</p>
+<p><strong>子问题与解决</strong>：</p>
+<ul>
+<li><strong>菜单高亮丢失</strong>：PJAX 不刷新导航栏，页面切换后当前菜单项不高亮。在 <code>pjax:success</code> 中根据 <code>window.location.pathname</code> 重新匹配并添加 <code>.active</code> 类</li>
+<li><strong>移动端菜单未关闭</strong>：菜单链接点击跳转后汉堡菜单仍保持打开。在 <code>pjax:success</code> 中取消 <code>#menu-trigger</code> 的勾选状态</li>
+<li><strong>代码高亮丢失</strong>：PJAX 替换内容后新页面的代码块没有 <code>data-lang</code> 属性。在 <code>pjax:success</code> 中重新遍历 <code>figure.highlight</code> 设置属性</li>
+</ul>
+<hr>
+<h3 id="15-Footer-优化"><a href="#15-Footer-优化" class="headerlink" title="15. Footer 优化"></a>15. Footer 优化</h3><p><strong>需求</strong>：底部版权声明简约化，去除冗余链接。</p>
+<p><strong>改动</strong>：</p>
+<ul>
+<li>原版：<code>© Site by Nonoxs</code> + Hexo 链接 + Klise 链接 + 中文网字计划链接 + “始于2025”</li>
+<li>改为：<code>© 2025 Nonoxs. All wrongs reserved.</code>（谐音幽默梗）</li>
+<li>移除所有外部链接，只保留一行版权信息</li>
+</ul>
+<hr>
+<h3 id="16-档案馆搜索功能"><a href="#16-档案馆搜索功能" class="headerlink" title="16. 档案馆搜索功能"></a>16. 档案馆搜索功能</h3><p><strong>需求</strong>：档案馆页面支持搜索文章。</p>
+<p><strong>实现</strong>：</p>
+<ul>
+<li>在档案馆页面顶部添加搜索输入框</li>
+<li>使用纯前端 JS 实现实时过滤：监听 <code>input</code> 事件 → 匹配文章标题和标签 → 隐藏不匹配的条目</li>
+<li>搜索框字体使用 <code>font-family: inherit</code> 与页面中文字体一致</li>
+<li>解决 PJAX 下搜索脚本不执行的问题：移除 <code>DOMContentLoaded</code> 包装，改用 IIFE 直接执行</li>
+</ul>
+<hr>
+<h3 id="17-Footer-固定在页面底部"><a href="#17-Footer-固定在页面底部" class="headerlink" title="17. Footer 固定在页面底部"></a>17. Footer 固定在页面底部</h3><p><strong>问题</strong>：标签、类别等短内容页面，Footer 没有贴在最底部。</p>
+<p><strong>解决</strong>：给 <code>#pjax-container</code> 设置 <code>min-height: calc(100vh - 200px)</code>，确保内容区至少占满视口，Footer 自然下沉。</p>
+<hr>
+<h3 id="18-动态背景与动效"><a href="#18-动态背景与动效" class="headerlink" title="18. 动态背景与动效"></a>18. 动态背景与动效</h3><p><strong>需求</strong>：为页面增加视觉动效，提升浏览体验。</p>
+<p><strong>实现</strong>：</p>
+<ul>
+<li><strong>Canvas 雨滴动画</strong>：80 个蓝色泪滴形粒子，从上方下落到下方循环，带轻微水平摇摆</li>
+<li><strong>名字淡入动画</strong>：CSS <code>@keyframes fadeInUp</code>，名字和签名同步从下方淡入上浮</li>
+<li><strong>滚动箭头</strong>：首页首屏底部弹跳箭头 <code>↓</code>，提示访客向下滑动查看更多内容</li>
+<li><strong>首屏布局</strong>：使用 Flexbox 将头像签名放在首屏顶部，箭头放在底部，文章列表在首屏下方</li>
+</ul>
+<hr>
+<h2 id="七、日常使用"><a href="#七、日常使用" class="headerlink" title="七、日常使用"></a>七、日常使用</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建新文章</span></span><br><span class="line">npx hexo new post <span class="string">&quot;文章标题&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地预览</span></span><br><span class="line">npx hexo server -p 5000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发布</span></span><br><span class="line">git add . &amp;&amp; git commit -m <span class="string">&quot;新文章&quot;</span> &amp;&amp; git push</span><br><span class="line"></span><br><span class="line"><span class="comment"># GitHub Actions 自动部署，约 30 秒后生效</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<blockquote>
+<p>记录日期：2026年7月11日</p>
+</blockquote>
+</div>          
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/Nonoxs111-blog/2026/07/12/Edge%E6%8F%92%E4%BB%B6AI%E9%98%85%E8%AF%BB%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">Edge插件AI阅读助手开发记录</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/Nonoxs111-blog/2026/07/11/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-%E7%A4%BA%E4%BE%8B%E6%96%87%E7%AB%A0/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">读书笔记-示例文章</span>
+    </a>
+    
+  </nav>
+
+   </main>
+</div>
+</div>
+  <footer class="footer">
+    <small>© 2025 Nonoxs. All wrongs reserved.</small>
+  </footer>
+  
+  
+
+    
+      <script src="/Nonoxs111-blog/js/main.js"></script>
+    
+  
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+  <script>
+    var pjax = new Pjax({
+      elements: 'a.menu-link, a[href^="/"]:not([target="_blank"])',
+      selectors: ['#pjax-container', 'title']
+    });
+    document.addEventListener('pjax:success', function() {
+      // re-apply highlight data-lang after pjax swap
+      document.querySelectorAll('figure.highlight').forEach(function(item) {
+        var langName = item.getAttribute('class').split(' ')[1];
+        if (langName === 'plain' || langName === undefined) langName = 'Code';
+        item.setAttribute('data-lang', langName);
+      });
+      // update active menu link
+      var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+      document.querySelectorAll('.menu-link').forEach(function(link) {
+        var href = link.getAttribute('href').replace(/\/$/, '') || '/';
+        if (href === currentPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      // close mobile menu after navigation
+      var trigger = document.getElementById('menu-trigger');
+      if (trigger) trigger.checked = false;
+    });
+  </script>
+  <script>
+  // Blue rain droplet canvas
+  (function() {
+    var canvas = document.getElementById('rain-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H;
+    var drops = [];
+    var DROP_COUNT = 80;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function randomDrop() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * -H,
+        r: 2 + Math.random() * 4,
+        speed: 6 + Math.random() * 10,
+        opacity: 0.15 + Math.random() * 0.25,
+        sway: (Math.random() - 0.5) * 1.5
+      };
+    }
+
+    for (var i = 0; i < DROP_COUNT; i++) {
+      var d = randomDrop();
+      d.y = Math.random() * H;
+      drops.push(d);
+    }
+
+    function drawDrop(drop) {
+      ctx.save();
+      ctx.translate(drop.x, drop.y);
+      ctx.beginPath();
+      // teardrop shape
+      ctx.moveTo(0, -drop.r * 2);
+      ctx.bezierCurveTo(drop.r, -drop.r, drop.r, 0, 0, drop.r);
+      ctx.bezierCurveTo(-drop.r, 0, -drop.r, -drop.r, 0, -drop.r * 2);
+      ctx.closePath();
+      var isDark = document.body.getAttribute('data-theme') === 'dark';
+      var color = isDark ? '100, 180, 220' : '80, 160, 210';
+      ctx.fillStyle = 'rgba(' + color + ',' + drop.opacity + ')';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < drops.length; i++) {
+        var drop = drops[i];
+        drop.y += drop.speed;
+        drop.x += drop.sway;
+        if (drop.y > H + 20) {
+          drops[i] = randomDrop();
+        }
+        drawDrop(drop);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+  </script>
+  <script>
+  // Navbar scroll effect - desktop only
+  (function() {
+    var navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    var isScrolled = false;
+    var ticking = false;
+    function update() {
+      if (window.innerWidth <= 768) return;
+      var y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+      var shouldScroll = y > 10;
+      if (shouldScroll !== isScrolled) {
+        isScrolled = shouldScroll;
+        navbar.classList.toggle('scrolled', shouldScroll);
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', function() {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+  })();
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('loaded');
+});
+
+  </script>
+</body>
+</html>

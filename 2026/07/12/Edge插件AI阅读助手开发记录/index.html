@@ -1,0 +1,594 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css' />
+  <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/jhlst/dist/%E4%BA%AC%E8%8F%AF%E8%80%81%E5%AE%8B%E4%BD%93v2_002/result.css' />  
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edge插件AI阅读助手开发记录 [ Nonoxs111&#39;s Blog ]</title>
+
+  <link rel="icon" href="/Nonoxs111-blog/img/carrot-48x48.png">
+
+
+    <meta name="author" content="Nonoxs">
+
+
+
+
+
+  <link rel="alternate" href="/Nonoxs111-blog/atom.xml " title="Nonoxs111&#39;s Blog" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/Nonoxs111-blog/css/main.css">
+  
+
+  <style>
+    @media screen and (max-width: 768px) {
+      .navbar, .navbar.scrolled {
+        background: #fff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+    }
+  </style>
+
+<script defer>
+  document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState == 'hidden') {
+      normal_title = document.title;
+      document.title = '点一下';
+  } else document.title = normal_title;
+});
+
+</script>
+  <body data-theme="light" class="notransition">
+    <canvas id="rain-canvas"></canvas>
+    <script defer>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/"> 主页</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/tags/"> 标签</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/categories/"> 类别</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/archives/"> 档案馆</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/about/"> 关于</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div id="pjax-container"><button id="toTopBtn"><i class="fa-solid fa-hand-point-up " ></i></button>
+<button id="toggleButton"><i class="fa-solid fa-chart-bar " ></i></button>
+<div id="overlay" class="overlay">
+  <div class="content">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%98%E8%B5%B7%EF%BC%9A%E9%98%85%E8%AF%BB%E6%8A%80%E6%9C%AF%E6%96%87%E7%AB%A0%E6%97%B6%E7%9A%84%E7%97%9B%E7%82%B9"><span class="toc-text">缘起：阅读技术文章时的痛点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="toc-text">技术选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%EF%BC%9A%E5%9B%9B%E5%B1%82-Agent-%E6%A8%A1%E5%9E%8B"><span class="toc-text">架构设计：四层 Agent 模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="toc-text">核心功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%92%E8%AF%8D%E6%B5%AE%E5%8A%A8%E8%8F%9C%E5%8D%95"><span class="toc-text">1. 划词浮动菜单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%9D%A2%E8%AF%95%E8%80%83%E7%82%B9%E6%99%BA%E8%83%BD%E5%88%86%E6%9E%90%EF%BC%88%E6%A0%B8%E5%BF%83%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="toc-text">2. 面试考点智能分析（核心场景）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-SSE-%E6%B5%81%E5%BC%8F%E6%89%93%E5%AD%97%E6%9C%BA%E6%95%88%E6%9E%9C"><span class="toc-text">3. SSE 流式打字机效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BA%94%E8%89%B2%E9%AB%98%E4%BA%AE%E7%B3%BB%E7%BB%9F"><span class="toc-text">4. 五色高亮系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Popup-%E5%AF%B9%E8%AF%9D%E7%AA%97%E5%8F%A3-%E4%B8%80%E9%94%AE%E6%91%98%E8%A6%81"><span class="toc-text">5. Popup 对话窗口 + 一键摘要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E8%BF%BD%E9%97%AE%E9%93%BE"><span class="toc-text">6. 追问链</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91"><span class="toc-text">实现中遇到的坑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Readability-%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="toc-text">Readability 兼容性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Markdown-%E6%B8%B2%E6%9F%93%E4%B8%8D%E5%BC%95%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E5%BA%93"><span class="toc-text">Markdown 渲染不引入第三方库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XPath-%E8%B7%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">XPath 跨浏览器一致性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CI-CD%EF%BC%9A%E6%8E%A8%E9%80%81%E5%8D%B3%E5%8F%91%E5%B8%83"><span class="toc-text">CI&#x2F;CD：推送即发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%85%E6%94%B9%E8%BF%9B"><span class="toc-text">待改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+    <button id="closeButton"><i class="fa-solid fa-circle-xmark"></i></button>
+  </div>
+</div>
+<div class="wrapper post">
+  <head>
+    <!-- 引入 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="generator" content="Hexo 8.1.2"></head>
+
+
+
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/Nonoxs111-blog/tags/AI/" class="tag"># AI</a><a href="/Nonoxs111-blog/tags/Edge%E6%89%A9%E5%B1%95/" class="tag"># Edge扩展</a><a href="/Nonoxs111-blog/tags/React/" class="tag"># React</a><a href="/Nonoxs111-blog/tags/TypeScript/" class="tag"># TypeScript</a><a href="/Nonoxs111-blog/tags/%E9%9D%A2%E8%AF%95/" class="tag"># 面试</a><a href="/Nonoxs111-blog/tags/WXT/" class="tag"># WXT</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">Edge插件AI阅读助手开发记录</h1>
+          <div class="post-meta">
+            最后更新: <time>Jul 12, 2026</time>
+            作者: <span itemprop="author">
+              <span itemprop="name">Nonoxs</span>
+            </span>
+            字数: <span class="post-count">2.1k</span>
+            预计阅读时间: <span class="post-count">7min</span> 
+          </div>       
+        </header>
+          <div class="page-content"><blockquote>
+<p>一款基于 React + WXT + 智谱 GLM-4 的 Edge 浏览器扩展，把 AI 阅读和面试备考嵌入到每一次划词操作里。<br>项目地址：<a target="_blank" rel="noopener" href="https://github.com/Nonoxs111/ai-reader">github.com&#x2F;Nonoxs111&#x2F;ai-reader</a></p>
+</blockquote>
+<hr>
+<h2 id="缘起：阅读技术文章时的痛点"><a href="#缘起：阅读技术文章时的痛点" class="headerlink" title="缘起：阅读技术文章时的痛点"></a>缘起：阅读技术文章时的痛点</h2><p>准备前端面试的时候，我每天会大量阅读技术文章。过程中有几个很让人烦躁的瞬间：</p>
+<ol>
+<li><strong>遇到不懂的概念</strong> → 选中 → 右键搜索 → 打开新标签页 → 读搜索结果 → 切回来……一套操作下来，刚才读到哪了？</li>
+<li><strong>想翻译某段英文</strong> → 复制 → 打开翻译工具 → 粘贴 → 等结果 → 切回来……又一次打断。</li>
+<li><strong>想判断某个知识点面试考不考</strong> → 这得去牛客&#x2F;掘金搜一圈，流程更长。</li>
+<li><strong>读到重点想标记</strong> → 浏览器没有内置高亮功能，只能开个笔记软件记。</li>
+</ol>
+<p>每次切换都打断阅读心流，累积下来效率很低。</p>
+<p>于是有了这个项目：<strong>AI 阅读助手</strong>。选中文字，AI 在鼠标旁边弹出，原地给你解释、翻译、分析面试考点，还能高亮标记重点——全程不离开当前页面。</p>
+<hr>
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>选型</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前端框架</td>
+<td>React 19 + TypeScript</td>
+<td>类型安全，组件化开发浮动菜单和 Popup</td>
+</tr>
+<tr>
+<td>扩展框架</td>
+<td><a target="_blank" rel="noopener" href="https://wxt.dev/">WXT</a></td>
+<td>统一管理 content&#x2F;background&#x2F;popup，自带 HMR，一键构建 Chrome&#x2F;Firefox&#x2F;Edge</td>
+</tr>
+<tr>
+<td>大模型</td>
+<td>智谱 GLM-4-Flash</td>
+<td>免费额度够用，SSE 流式响应速度快</td>
+</tr>
+<tr>
+<td>正文提取</td>
+<td>Mozilla Readability</td>
+<td>从任意网页提取纯净正文，一键摘要</td>
+</tr>
+<tr>
+<td>测试</td>
+<td>Vitest</td>
+<td>Vite 生态，速度快</td>
+</tr>
+<tr>
+<td>CI&#x2F;CD</td>
+<td>GitHub Actions</td>
+<td>push 自动构建打 zip 包、创建 Release</td>
+</tr>
+</tbody></table>
+<p>选择 WXT 是个好决定。它屏蔽了 Chrome 扩展开发中很多琐碎细节（manifest 配置、content script 注入、跨环境通信），开发体验接近写普通 React 应用。</p>
+<hr>
+<h2 id="架构设计：四层-Agent-模型"><a href="#架构设计：四层-Agent-模型" class="headerlink" title="架构设计：四层 Agent 模型"></a>架构设计：四层 Agent 模型</h2><p>设计之初，我参考 AI Agent 的经典范式，把浏览器阅读过程抽象成四个层次：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────┐</span><br><span class="line">│            感知层 Perception          │</span><br><span class="line">│   监听划词事件、获取选区位置与上下文    │</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│            记忆层 Memory              │</span><br><span class="line">│   chrome.storage 持久化对话/高亮/历史  │</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│            决策层 Decision            │</span><br><span class="line">│   识别用户意图，匹配 Prompt 模板       │</span><br><span class="line">├─────────────────────────────────────┤</span><br><span class="line">│            执行层 Execution           │</span><br><span class="line">│   调用 GLM-4 API，SSE 流式渲染结果     │</span><br><span class="line">└─────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>这个分层让每个模块职责清晰——感知层只管”用户选中了什么”，决策层只管”用户想干嘛”，执行层只管”调 AI 并展示”。后续要换模型、加功能，改动范围都锁在对应层里。</p>
+<hr>
+<h2 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h2><h3 id="1-划词浮动菜单"><a href="#1-划词浮动菜单" class="headerlink" title="1. 划词浮动菜单"></a>1. 划词浮动菜单</h3><p>选中页面上的任意文本，鼠标上方立刻弹出操作菜单：</p>
+<ul>
+<li><strong>解释</strong>：通俗解读技术概念，200 字以内，配合生活化类比</li>
+<li><strong>翻译</strong>：专业中英互译，保留代码、变量名和 URL</li>
+<li><strong>面试</strong>：判断是否为前端高频考点，自动生成 3-5 道面试题和回答要点</li>
+<li><strong>高亮</strong>：五色高亮标记，支持改色和取消</li>
+</ul>
+<p>菜单位置动态计算——根据选区坐标和视口边界 clamp，确保不会超出屏幕边缘。</p>
+<h3 id="2-面试考点智能分析（核心场景）"><a href="#2-面试考点智能分析（核心场景）" class="headerlink" title="2. 面试考点智能分析（核心场景）"></a>2. 面试考点智能分析（核心场景）</h3><p>这是整个项目最贴合面试备考的功能。选中一个技术术语后点「面试」，AI 会：</p>
+<ol>
+<li><strong>先下结论</strong>：是高频考点还是低频考点，附难度星级（⭐ ~ ⭐⭐⭐⭐⭐）</li>
+<li><strong>如果是高频</strong>：列出 3-5 道典型面试题</li>
+<li><strong>每道题附带回答要点</strong>：不是给完整答案，而是给关键点，逼自己组织语言</li>
+</ol>
+<p>ResultCard 组件会解析 AI 返回的结构化文本，渲染成卡片式布局：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌──────────────────────────────────┐</span><br><span class="line">│  🔥 高频考点 · ⭐⭐⭐⭐           │</span><br><span class="line">│                                  │</span><br><span class="line">│  面试题 1：请解释闭包的原理...    │</span><br><span class="line">│  ├ 回答要点：                    │</span><br><span class="line">│  │  • 函数 + 词法作用域          │</span><br><span class="line">│  │  • 垃圾回收与内存泄漏         │</span><br><span class="line">│  │  • 实际应用场景               │</span><br><span class="line">│                                  │</span><br><span class="line">│  面试题 2：闭包在实际项目中的...  │</span><br><span class="line">│  └ ...                          │</span><br><span class="line">└──────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>这样在读文章的同时就能积累面试素材，不用单独花时间去找面经。</p>
+<h3 id="3-SSE-流式打字机效果"><a href="#3-SSE-流式打字机效果" class="headerlink" title="3. SSE 流式打字机效果"></a>3. SSE 流式打字机效果</h3><p>不是等 AI 全部生成完再显示，而是逐字输出。核心实现是手动解析 SSE（Server-Sent Events）协议：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> reader = response.<span class="property">body</span>!.<span class="title function_">getReader</span>();</span><br><span class="line"><span class="keyword">const</span> decoder = <span class="keyword">new</span> <span class="title class_">TextDecoder</span>();</span><br><span class="line"><span class="keyword">let</span> buffer = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; done, value &#125; = <span class="keyword">await</span> reader.<span class="title function_">read</span>();</span><br><span class="line">  <span class="keyword">if</span> (done) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">  buffer += decoder.<span class="title function_">decode</span>(value, &#123; <span class="attr">stream</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> lines = buffer.<span class="title function_">split</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">  buffer = lines.<span class="title function_">pop</span>() || <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> line <span class="keyword">of</span> lines) &#123;</span><br><span class="line">    <span class="keyword">if</span> (line.<span class="title function_">startsWith</span>(<span class="string">&#x27;data: &#x27;</span>)) &#123;</span><br><span class="line">      <span class="keyword">const</span> data = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(line.<span class="title function_">slice</span>(<span class="number">6</span>));</span><br><span class="line">      <span class="title function_">appendToStream</span>(data.<span class="property">choices</span>[<span class="number">0</span>].<span class="property">delta</span>.<span class="property">content</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>配合 <code>AbortController</code>，用户可以随时关闭卡片取消请求。</p>
+<h3 id="4-五色高亮系统"><a href="#4-五色高亮系统" class="headerlink" title="4. 五色高亮系统"></a>4. 五色高亮系统</h3><p>高亮不只是改个背景色。需要解决三个问题：</p>
+<ul>
+<li><strong>持久化</strong>：页面刷新后高亮还在</li>
+<li><strong>去重</strong>：同一段文字不能被重复高亮</li>
+<li><strong>跨页面</strong>：不同标签页各自独立</li>
+</ul>
+<p>解决方案是用 <strong>XPath + 文本偏移量</strong> 精确定位，而非依赖 DOM 引用：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;uuid&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://example.com/article&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;被高亮的文字&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;color&quot;</span><span class="punctuation">:</span> <span class="string">&quot;yellow&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;startXPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/html/body/div[2]/p[3]/text()&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;startOffset&quot;</span><span class="punctuation">:</span> <span class="number">42</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;endXPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/html/body/div[2]/p[3]/text()&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;endOffset&quot;</span><span class="punctuation">:</span> <span class="number">58</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;timestamp&quot;</span><span class="punctuation">:</span> <span class="number">1720000000000</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>页面加载时自动恢复当前 URL 的所有高亮。点击已有高亮还能弹出迷你菜单改颜色或取消。</p>
+<h3 id="5-Popup-对话窗口-一键摘要"><a href="#5-Popup-对话窗口-一键摘要" class="headerlink" title="5. Popup 对话窗口 + 一键摘要"></a>5. Popup 对话窗口 + 一键摘要</h3><p>点击扩展图标弹出 360×520 的小窗口：</p>
+<ul>
+<li><strong>一键摘要</strong>：获取当前页面正文，生成三句话总结 + 关键要点列表</li>
+<li><strong>查询历史</strong>：所有划词操作的历史记录，点击可回溯到当时上下文</li>
+<li><strong>自由对话</strong>：输入问题直接和 AI 聊</li>
+</ul>
+<p>对话历史持久化在 <code>chrome.storage</code> 里，关闭浏览器也不丢。</p>
+<h3 id="6-追问链"><a href="#6-追问链" class="headerlink" title="6. 追问链"></a>6. 追问链</h3><p>在任意 AI 结果下方都有一个追问输入框。比如 AI 解释了「闭包」，你可以继续问「那在实际项目里什么时候用它？有什么坑？」——形成递进式的理解链条。</p>
+<hr>
+<h2 id="实现中遇到的坑"><a href="#实现中遇到的坑" class="headerlink" title="实现中遇到的坑"></a>实现中遇到的坑</h2><h3 id="Readability-兼容性"><a href="#Readability-兼容性" class="headerlink" title="Readability 兼容性"></a>Readability 兼容性</h3><p>某些网站（如掘金）的 <code>document.cloneNode(true)</code> 会直接抛异常。做了降级处理：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> documentClone = <span class="variable language_">document</span>.<span class="title function_">cloneNode</span>(<span class="literal">true</span>) <span class="keyword">as</span> <span class="title class_">Document</span>;</span><br><span class="line"><span class="keyword">if</span> (!documentClone.<span class="title function_">querySelector</span>(<span class="string">&#x27;body&#x27;</span>)) &#123;</span><br><span class="line">  <span class="comment">// 降级：直接从 body.innerText 构造最小可用 DOM</span></span><br><span class="line">  <span class="keyword">const</span> text = <span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">innerText</span>;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Markdown-渲染不引入第三方库"><a href="#Markdown-渲染不引入第三方库" class="headerlink" title="Markdown 渲染不引入第三方库"></a>Markdown 渲染不引入第三方库</h3><p>AI 返回的是 Markdown，但我不想为这点功能引入 <code>marked</code> 之类的库。手写了一个轻量解析器，支持行内代码、加粗、无序列表、有序列表和段落。减少包体积，渲染也更可控。</p>
+<h3 id="XPath-跨浏览器一致性"><a href="#XPath-跨浏览器一致性" class="headerlink" title="XPath 跨浏览器一致性"></a>XPath 跨浏览器一致性</h3><p>Edge 和 Chrome 的 XPath 实现有细微差异，尤其是处理 <code>text()</code> 节点编号时。花了不少时间调试，最终通过兼容两种编号规则解决。</p>
+<hr>
+<h2 id="CI-CD：推送即发布"><a href="#CI-CD：推送即发布" class="headerlink" title="CI&#x2F;CD：推送即发布"></a>CI&#x2F;CD：推送即发布</h2><p>每次 push 到 main 分支，GitHub Actions 自动：</p>
+<ol>
+<li>安装依赖并构建扩展</li>
+<li>打包 zip</li>
+<li>创建带时间戳的 GitHub Release</li>
+</ol>
+<p>不需要手动打包上传，开发流程很顺畅。</p>
+<hr>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ai-reader/</span><br><span class="line">├── api/</span><br><span class="line">│   ├── glm.ts                # GLM-4 流式调用</span><br><span class="line">│   ├── prompts.ts            # 解释/翻译/追问/摘要 Prompt 模板</span><br><span class="line">│   └── prompts/interview.ts  # 面试考点专用 Prompt</span><br><span class="line">├── components/</span><br><span class="line">│   ├── TextSelectionMenu/    # 划词浮动菜单</span><br><span class="line">│   ├── ResultCard/           # AI 结果卡片（含面试解析）</span><br><span class="line">│   └── LoadingDots/          # 三点弹跳加载动画</span><br><span class="line">├── entrypoints/</span><br><span class="line">│   ├── content.ts            # Content Script 核心（568 行）</span><br><span class="line">│   ├── background.ts         # Service Worker</span><br><span class="line">│   └── popup/                # 扩展弹窗 UI</span><br><span class="line">└── .github/workflows/        # 自动构建发布</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="待改进"><a href="#待改进" class="headerlink" title="待改进"></a>待改进</h2><p>诚实地列一下当前的技术债务：</p>
+<ol>
+<li><strong>API Key 硬编码</strong>：目前直接写在 <code>glm.ts</code> 里，生产环境应该做服务端代理或让用户配置</li>
+<li><strong>缺少 E2E 测试</strong>：扩展交互流程还没有自动化测试覆盖</li>
+<li><strong>Prompt 调优空间</strong>：面试分析的准确率还可以用更精细的 Prompt Engineering 提升</li>
+</ol>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个项目不只是一个浏览器扩展，更是一次对「AI 如何融入日常阅读和备考体验」的探索。从四层 Agent 架构设计，到 SSE 流式渲染，到 XPath 高亮持久化，每个功能背后都是一次「用户到底需要什么」的追问。</p>
+<p>如果你也在准备前端面试，或者经常阅读技术文章时需要查东西——欢迎试试这个插件，或者直接看<a target="_blank" rel="noopener" href="https://github.com/Nonoxs111/ai-reader">源码</a>自己改。</p>
+<hr>
+<blockquote>
+<p><strong>技术栈</strong>：React 19 · TypeScript · WXT · 智谱 GLM-4 · Vite · GitHub Actions</p>
+<p><strong>项目地址</strong>：<a target="_blank" rel="noopener" href="https://github.com/Nonoxs111/ai-reader">github.com&#x2F;Nonoxs111&#x2F;ai-reader</a></p>
+</blockquote>
+</div>          
+          <nav class="post-nav">
+    
+    <a class="post-nav-item post-nav-prev" href="/Nonoxs111-blog/2026/07/15/2026-07-15-HTTP%E9%87%8D%E5%AE%9A%E5%90%91CORS%E6%8E%92%E6%9F%A5/">
+      <div class="nav-arrow">&lt;&nbsp;NEWER</div>
+      <span class="post-title">时隔几个月，Vue 项目突然&#34;空&#34;了——记一次 HTTP 重定向引发的 CORS 故障排查</span>
+    </a>
+    
+    
+    <a class="post-nav-item post-nav-next" href="/Nonoxs111-blog/2026/07/12/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">个人博客搭建记录</span>
+    </a>
+    
+  </nav>
+
+   </main>
+</div>
+</div>
+  <footer class="footer">
+    <small>© 2025 Nonoxs. All wrongs reserved.</small>
+  </footer>
+  
+  
+
+    
+      <script src="/Nonoxs111-blog/js/main.js"></script>
+    
+  
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+  <script>
+    var pjax = new Pjax({
+      elements: 'a.menu-link, a[href^="/"]:not([target="_blank"])',
+      selectors: ['#pjax-container', 'title']
+    });
+    document.addEventListener('pjax:success', function() {
+      // re-apply highlight data-lang after pjax swap
+      document.querySelectorAll('figure.highlight').forEach(function(item) {
+        var langName = item.getAttribute('class').split(' ')[1];
+        if (langName === 'plain' || langName === undefined) langName = 'Code';
+        item.setAttribute('data-lang', langName);
+      });
+      // update active menu link
+      var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+      document.querySelectorAll('.menu-link').forEach(function(link) {
+        var href = link.getAttribute('href').replace(/\/$/, '') || '/';
+        if (href === currentPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      // close mobile menu after navigation
+      var trigger = document.getElementById('menu-trigger');
+      if (trigger) trigger.checked = false;
+    });
+  </script>
+  <script>
+  // Blue rain droplet canvas
+  (function() {
+    var canvas = document.getElementById('rain-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H;
+    var drops = [];
+    var DROP_COUNT = 80;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function randomDrop() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * -H,
+        r: 2 + Math.random() * 4,
+        speed: 6 + Math.random() * 10,
+        opacity: 0.15 + Math.random() * 0.25,
+        sway: (Math.random() - 0.5) * 1.5
+      };
+    }
+
+    for (var i = 0; i < DROP_COUNT; i++) {
+      var d = randomDrop();
+      d.y = Math.random() * H;
+      drops.push(d);
+    }
+
+    function drawDrop(drop) {
+      ctx.save();
+      ctx.translate(drop.x, drop.y);
+      ctx.beginPath();
+      // teardrop shape
+      ctx.moveTo(0, -drop.r * 2);
+      ctx.bezierCurveTo(drop.r, -drop.r, drop.r, 0, 0, drop.r);
+      ctx.bezierCurveTo(-drop.r, 0, -drop.r, -drop.r, 0, -drop.r * 2);
+      ctx.closePath();
+      var isDark = document.body.getAttribute('data-theme') === 'dark';
+      var color = isDark ? '100, 180, 220' : '80, 160, 210';
+      ctx.fillStyle = 'rgba(' + color + ',' + drop.opacity + ')';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < drops.length; i++) {
+        var drop = drops[i];
+        drop.y += drop.speed;
+        drop.x += drop.sway;
+        if (drop.y > H + 20) {
+          drops[i] = randomDrop();
+        }
+        drawDrop(drop);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+  </script>
+  <script>
+  // Navbar scroll effect - desktop only
+  (function() {
+    var navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    var isScrolled = false;
+    var ticking = false;
+    function update() {
+      if (window.innerWidth <= 768) return;
+      var y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+      var shouldScroll = y > 10;
+      if (shouldScroll !== isScrolled) {
+        isScrolled = shouldScroll;
+        navbar.classList.toggle('scrolled', shouldScroll);
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', function() {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+  })();
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('loaded');
+});
+
+  </script>
+</body>
+</html>

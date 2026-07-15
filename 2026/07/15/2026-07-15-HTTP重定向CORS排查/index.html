@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css' />
+  <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/jhlst/dist/%E4%BA%AC%E8%8F%AF%E8%80%81%E5%AE%8B%E4%BD%93v2_002/result.css' />  
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>时隔几个月，Vue 项目突然&#34;空&#34;了——记一次 HTTP 重定向引发的 CORS 故障排查 [ Nonoxs111&#39;s Blog ]</title>
+
+  <link rel="icon" href="/Nonoxs111-blog/img/carrot-48x48.png">
+
+
+    <meta name="author" content="Nonoxs">
+
+
+
+
+
+  <link rel="alternate" href="/Nonoxs111-blog/atom.xml " title="Nonoxs111&#39;s Blog" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/Nonoxs111-blog/css/main.css">
+  
+
+  <style>
+    @media screen and (max-width: 768px) {
+      .navbar, .navbar.scrolled {
+        background: #fff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+    }
+  </style>
+
+<script defer>
+  document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState == 'hidden') {
+      normal_title = document.title;
+      document.title = '点一下';
+  } else document.title = normal_title;
+});
+
+</script>
+  <body data-theme="light" class="notransition">
+    <canvas id="rain-canvas"></canvas>
+    <script defer>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/"> 主页</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/tags/"> 标签</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/categories/"> 类别</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/archives/"> 档案馆</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/about/"> 关于</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div id="pjax-container"><button id="toTopBtn"><i class="fa-solid fa-hand-point-up " ></i></button>
+<button id="toggleButton"><i class="fa-solid fa-chart-bar " ></i></button>
+<div id="overlay" class="overlay">
+  <div class="content">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E8%B1%A1"><span class="toc-text">现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B"><span class="toc-text">排查过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%A1%AE%E8%AE%A4%E7%BC%96%E8%AF%91%E6%98%AF%E5%90%A6%E6%AD%A3%E5%B8%B8"><span class="toc-text">第一步：确认编译是否正常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E7%A1%AE%E8%AE%A4-API-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E5%90%A6%E5%AD%98%E6%B4%BB"><span class="toc-text">第二步：确认 API 服务器是否存活</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E6%A3%80%E6%9F%A5-CORS"><span class="toc-text">第三步：检查 CORS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E6%89%BE%E5%88%B0%E6%A0%B9%E5%9B%A0"><span class="toc-text">第四步：找到根因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%9C%AC%E8%B4%A8"><span class="toc-text">问题本质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E7%B1%BB%E2%80%9D%E6%A1%86%E6%9E%B6%E5%9C%A8%E4%BD%86%E5%86%85%E5%AE%B9%E7%A9%BA%E2%80%9D%E7%9A%84%E6%8E%92%E6%9F%A5%E5%A5%97%E8%B7%AF"><span class="toc-text">这类”框架在但内容空”的排查套路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8F%E9%AA%8C%E6%95%99%E8%AE%AD"><span class="toc-text">经验教训</span></a></li></ol></li></ol>
+    <button id="closeButton"><i class="fa-solid fa-circle-xmark"></i></button>
+  </div>
+</div>
+<div class="wrapper post">
+  <head>
+    <!-- 引入 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="generator" content="Hexo 8.1.2"></head>
+
+
+
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/Nonoxs111-blog/tags/Vue/" class="tag"># Vue</a><a href="/Nonoxs111-blog/tags/CORS/" class="tag"># CORS</a><a href="/Nonoxs111-blog/tags/%E5%89%8D%E7%AB%AF%E8%B0%83%E8%AF%95/" class="tag"># 前端调试</a><a href="/Nonoxs111-blog/tags/HTTP/" class="tag"># HTTP</a><a href="/Nonoxs111-blog/tags/%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" class="tag"># 踩坑记录</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">时隔几个月，Vue 项目突然&#34;空&#34;了——记一次 HTTP 重定向引发的 CORS 故障排查</h1>
+          <div class="post-meta">
+            最后更新: <time>Jul 15, 2026</time>
+            作者: <span itemprop="author">
+              <span itemprop="name">Nonoxs</span>
+            </span>
+            字数: <span class="post-count">1.1k</span>
+            预计阅读时间: <span class="post-count">4min</span> 
+          </div>       
+        </header>
+          <div class="page-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近翻出一个几个月前做的 Vue 3 电商项目（小兔鲜），想着跑起来看看效果。结果 <code>npm run dev</code> 之后，页面是能打开，Header、Footer 这些框架结构都正常显示，但<strong>轮播图、商品列表、分类导航——所有动态内容一片空白</strong>。</p>
+<p>明明几个月前还好好的，怎么突然就坏了？</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><ul>
+<li>页面能正常加载，没有白屏</li>
+<li>导航栏、页头、页脚等静态布局正常渲染</li>
+<li>轮播图区域一片空白</li>
+<li>商品列表、分类菜单等数据驱动的区域全部为空</li>
+<li>浏览器 DevTools Network 面板显示 API 请求全部标红 <code>(failed)</code></li>
+</ul>
+<h2 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h2><h3 id="第一步：确认编译是否正常"><a href="#第一步：确认编译是否正常" class="headerlink" title="第一步：确认编译是否正常"></a>第一步：确认编译是否正常</h3><p>先检查终端，Vite 启动正常，没有任何编译错误。排除代码语法问题。</p>
+<h3 id="第二步：确认-API-服务器是否存活"><a href="#第二步：确认-API-服务器是否存活" class="headerlink" title="第二步：确认 API 服务器是否存活"></a>第二步：确认 API 服务器是否存活</h3><p>这个项目的后端数据来自远程测试服务器 <code>pcapi-xiaotuxian-front-devtest.itheima.net</code>。用 curl 测试一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sL <span class="string">&quot;http://pcapi-xiaotuxian-front-devtest.itheima.net/home/banner&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>返回了正常的 JSON 数据，说明服务器没挂。</p>
+<h3 id="第三步：检查-CORS"><a href="#第三步：检查-CORS" class="headerlink" title="第三步：检查 CORS"></a>第三步：检查 CORS</h3><p>用 DevTools 看 Network 面板，所有 API 请求都是 <strong><code>(failed) net::ERR_FAILED</code></strong>，Response 面板里什么都没有。很像是跨域问题。</p>
+<p>CORS 排查的标准手法——带上 Origin 头测一测：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 测试 HTTP 端点的响应头</span></span><br><span class="line">curl -sI -H <span class="string">&quot;Origin: http://localhost:5173&quot;</span> \</span><br><span class="line">  <span class="string">&quot;http://pcapi-xiaotuxian-front-devtest.itheima.net/home/banner&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>返回结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 301 Moved Permanently</span><br><span class="line">Location: https://pcapi-xiaotuxian-front-devtest.itheima.net/home/banner</span><br><span class="line"># ⚠️ 注意：响应里没有 Access-Control-Allow-Origin 头！</span><br></pre></td></tr></table></figure>
+
+<p>再测重定向目标（HTTPS 端点）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sI -H <span class="string">&quot;Origin: http://localhost:5173&quot;</span> \</span><br><span class="line">  <span class="string">&quot;https://pcapi-xiaotuxian-front-devtest.itheima.net/home/banner&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>返回结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200</span><br><span class="line">Access-Control-Allow-Origin: *</span><br><span class="line"># ✅ HTTPS 端点的 CORS 配置正常</span><br></pre></td></tr></table></figure>
+
+<h3 id="第四步：找到根因"><a href="#第四步：找到根因" class="headerlink" title="第四步：找到根因"></a>第四步：找到根因</h3><p>关键事实：</p>
+<ul>
+<li>项目中 <code>src/utils/http.js</code> 的 <code>baseURL</code> 写的是 <strong><code>http://</code></strong></li>
+<li>服务器在这几个月里升级了，对 HTTP 请求一律返回 <strong>301 重定向到 HTTPS</strong></li>
+<li>但 <strong>301 重定向的响应中缺少 CORS 头</strong></li>
+</ul>
+<p>在浏览器中，当一个跨域请求遇到重定向时，浏览器会对<strong>整个重定向链</strong>做 CORS 校验。如果中间某个响应缺少 <code>Access-Control-Allow-Origin</code>，浏览器会直接阻止整个请求——这就是所有 API 调用失败的原因。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">实际发生的请求链：</span><br><span class="line">  browser ──GET──▶ http://...api          (HTTP 请求)</span><br><span class="line">          ◀──301── Location: https://...  (没有 CORS 头 ❌)</span><br><span class="line">          🚫 浏览器拦截，请求失败</span><br><span class="line"></span><br><span class="line">正常的请求链：</span><br><span class="line">  browser ──GET──▶ https://...api         (直接请求 HTTPS)</span><br><span class="line">          ◀──200── Access-Control-Allow-Origin: *  (CORS 头正常 ✅)</span><br><span class="line">          ✅ 成功获取数据</span><br></pre></td></tr></table></figure>
+
+<p>一个字母之差（<code>http</code> vs <code>https</code>），导致整个项目的数据层全部瘫痪。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>把项目中两处 API 地址从 HTTP 改成 HTTPS：</p>
+<p><strong><code>src/utils/http.js</code></strong>：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- baseURL: &quot;http://pcapi-xiaotuxian-front-devtest.itheima.net&quot;,</span></span><br><span class="line"><span class="addition">+ baseURL: &quot;https://pcapi-xiaotuxian-front-devtest.itheima.net&quot;,</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><code>src/views/Pay/index.vue</code></strong>：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- const baseURL = &#x27;http://pcapi-xiaotuxian-front-devtest.itheima.net/&#x27;</span></span><br><span class="line"><span class="addition">+ const baseURL = &#x27;https://pcapi-xiaotuxian-front-devtest.itheima.net/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>改完重启 <code>npm run dev</code>，一切恢复正常。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="问题本质"><a href="#问题本质" class="headerlink" title="问题本质"></a>问题本质</h3><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>API 服务器</td>
+<td>升级到 HTTPS，HTTP 请求一律 301</td>
+</tr>
+<tr>
+<td>前端代码</td>
+<td>还在请求 HTTP 地址</td>
+</tr>
+<tr>
+<td>301 重定向响应</td>
+<td>缺少 CORS 头</td>
+</tr>
+<tr>
+<td>浏览器</td>
+<td>拦截不符合 CORS 规范的跨域重定向</td>
+</tr>
+</tbody></table>
+<h3 id="这类”框架在但内容空”的排查套路"><a href="#这类”框架在但内容空”的排查套路" class="headerlink" title="这类”框架在但内容空”的排查套路"></a>这类”框架在但内容空”的排查套路</h3><p>以后遇到类似情况，按这个顺序排查：</p>
+<ol>
+<li><strong>看终端</strong> — 编译有没有报错？没报错，排除代码语法问题。</li>
+<li><strong>看 DevTools Network</strong> — API 请求状态是不是红色 <code>(failed)</code>？是的话就是请求没发出去或被拦截。</li>
+<li><strong>看 Console</strong> — 有没有 <code>blocked by CORS policy</code> 的报错？有就是跨域问题。</li>
+<li><strong>用 curl 测 CORS</strong> — <code>curl -I -H &quot;Origin: &lt;你的域名&gt;&quot; &lt;API地址&gt;</code>，看响应头有没有 <code>Access-Control-Allow-Origin</code>。</li>
+<li><strong>检查是否有重定向</strong> — 如果返回 3xx，检查重定向链上每一步是否都有 CORS 头。</li>
+</ol>
+<h3 id="经验教训"><a href="#经验教训" class="headerlink" title="经验教训"></a>经验教训</h3><ul>
+<li><strong>代码放着不动也会坏</strong>：第三方服务（尤其是教学&#x2F;测试服务器）随时可能升级配置，定期跑一跑老项目是好事。</li>
+<li><strong>API 地址集中管理</strong>：不要到处硬编码，本次踩坑就是因为 Pay 组件里单独写了一份 URL，差点漏改。</li>
+<li><strong>curl 比浏览器更诚实</strong>：浏览器报错信息有时候很模糊（一个干巴巴的 <code>net::ERR_FAILED</code>），curl 能让你看到原始的 HTTP 响应头，省很多瞎猜的时间。</li>
+</ul>
+<hr>
+<p><em>写于 2026-07-15</em></p>
+</div>          
+          <nav class="post-nav">
+    
+    
+    <a class="post-nav-item post-nav-next" href="/Nonoxs111-blog/2026/07/12/Edge%E6%8F%92%E4%BB%B6AI%E9%98%85%E8%AF%BB%E5%8A%A9%E6%89%8B%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">Edge插件AI阅读助手开发记录</span>
+    </a>
+    
+  </nav>
+
+   </main>
+</div>
+</div>
+  <footer class="footer">
+    <small>© 2025 Nonoxs. All wrongs reserved.</small>
+  </footer>
+  
+  
+
+    
+      <script src="/Nonoxs111-blog/js/main.js"></script>
+    
+  
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+  <script>
+    var pjax = new Pjax({
+      elements: 'a.menu-link, a[href^="/"]:not([target="_blank"])',
+      selectors: ['#pjax-container', 'title']
+    });
+    document.addEventListener('pjax:success', function() {
+      // re-apply highlight data-lang after pjax swap
+      document.querySelectorAll('figure.highlight').forEach(function(item) {
+        var langName = item.getAttribute('class').split(' ')[1];
+        if (langName === 'plain' || langName === undefined) langName = 'Code';
+        item.setAttribute('data-lang', langName);
+      });
+      // update active menu link
+      var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+      document.querySelectorAll('.menu-link').forEach(function(link) {
+        var href = link.getAttribute('href').replace(/\/$/, '') || '/';
+        if (href === currentPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      // close mobile menu after navigation
+      var trigger = document.getElementById('menu-trigger');
+      if (trigger) trigger.checked = false;
+    });
+  </script>
+  <script>
+  // Blue rain droplet canvas
+  (function() {
+    var canvas = document.getElementById('rain-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H;
+    var drops = [];
+    var DROP_COUNT = 80;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function randomDrop() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * -H,
+        r: 2 + Math.random() * 4,
+        speed: 6 + Math.random() * 10,
+        opacity: 0.15 + Math.random() * 0.25,
+        sway: (Math.random() - 0.5) * 1.5
+      };
+    }
+
+    for (var i = 0; i < DROP_COUNT; i++) {
+      var d = randomDrop();
+      d.y = Math.random() * H;
+      drops.push(d);
+    }
+
+    function drawDrop(drop) {
+      ctx.save();
+      ctx.translate(drop.x, drop.y);
+      ctx.beginPath();
+      // teardrop shape
+      ctx.moveTo(0, -drop.r * 2);
+      ctx.bezierCurveTo(drop.r, -drop.r, drop.r, 0, 0, drop.r);
+      ctx.bezierCurveTo(-drop.r, 0, -drop.r, -drop.r, 0, -drop.r * 2);
+      ctx.closePath();
+      var isDark = document.body.getAttribute('data-theme') === 'dark';
+      var color = isDark ? '100, 180, 220' : '80, 160, 210';
+      ctx.fillStyle = 'rgba(' + color + ',' + drop.opacity + ')';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < drops.length; i++) {
+        var drop = drops[i];
+        drop.y += drop.speed;
+        drop.x += drop.sway;
+        if (drop.y > H + 20) {
+          drops[i] = randomDrop();
+        }
+        drawDrop(drop);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+  </script>
+  <script>
+  // Navbar scroll effect - desktop only
+  (function() {
+    var navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    var isScrolled = false;
+    var ticking = false;
+    function update() {
+      if (window.innerWidth <= 768) return;
+      var y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+      var shouldScroll = y > 10;
+      if (shouldScroll !== isScrolled) {
+        isScrolled = shouldScroll;
+        navbar.classList.toggle('scrolled', shouldScroll);
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', function() {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+  })();
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('loaded');
+});
+
+  </script>
+</body>
+</html>
