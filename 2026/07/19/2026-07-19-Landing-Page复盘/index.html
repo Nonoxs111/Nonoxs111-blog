@@ -1,0 +1,720 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkai/dist/LXGWWenKai-Bold/result.css' />
+  <link rel='stylesheet' href='https://chinese-fonts-cdn.deno.dev/packages/jhlst/dist/%E4%BA%AC%E8%8F%AF%E8%80%81%E5%AE%8B%E4%BD%93v2_002/result.css' />  
+  
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>从 Prompt 到产品级 Landing Page — 一份写给设计师的前端工程复盘 [ Nonoxs111&#39;s Blog ]</title>
+
+  <link rel="icon" href="/Nonoxs111-blog/img/carrot-48x48.png">
+
+
+    <meta name="author" content="Nonoxs">
+
+
+
+
+
+  <link rel="alternate" href="/Nonoxs111-blog/atom.xml " title="Nonoxs111&#39;s Blog" type="application/atom+xml">
+
+
+  
+    <link rel="stylesheet" href="/Nonoxs111-blog/css/main.css">
+  
+
+  <style>
+    @media screen and (max-width: 768px) {
+      .navbar, .navbar.scrolled {
+        background: #fff !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
+    }
+  </style>
+
+<script defer>
+  document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState == 'hidden') {
+      normal_title = document.title;
+      document.title = '点一下';
+  } else document.title = normal_title;
+});
+
+</script>
+  <body data-theme="light" class="notransition">
+    <canvas id="rain-canvas"></canvas>
+    <script defer>
+      const body = document.body;
+      const data = body.getAttribute("data-theme");
+      const initTheme = (state) => {
+        if (state === "dark") {
+          body.setAttribute("data-theme", "dark");
+        } else if (state === "light") {
+          body.removeAttribute("data-theme");
+        } else {
+          localStorage.setItem("theme", data);
+        }
+      };
+   
+      initTheme(localStorage.getItem("theme"));
+      
+      setTimeout(() => body.classList.remove("notransition"), 75);
+    </script>
+  <div class="navbar" role="navigation">
+    <nav class="menu">
+      <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+      <label for="menu-trigger">
+        <span class="menu-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+          >
+            <path
+              d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"
+            />
+          </svg>
+        </span>
+      </label>
+      <a id="mode">
+        <svg
+          class="mode-sunny"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>LIGHT</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+        <svg
+          class="mode-moon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 512 512"
+        >
+          <title>DARK</title>
+          <line
+            x1="256"
+            y1="48"
+            x2="256"
+            y2="96"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="256"
+            y1="416"
+            x2="256"
+            y2="464"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="108.92"
+            x2="369.14"
+            y2="142.86"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="369.14"
+            x2="108.92"
+            y2="403.08"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="464"
+            y1="256"
+            x2="416"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="96"
+            y1="256"
+            x2="48"
+            y2="256"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="403.08"
+            y1="403.08"
+            x2="369.14"
+            y2="369.14"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <line
+            x1="142.86"
+            y1="142.86"
+            x2="108.92"
+            y2="108.92"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+          <circle
+            cx="256"
+            cy="256"
+            r="80"
+            style="stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+          />
+        </svg>
+      </a>
+      <div class="trigger">
+        <div class="trigger-container">
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/"> 主页</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/tags/"> 标签</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/categories/"> 类别</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/archives/"> 档案馆</a>
+          
+            
+            
+            
+            
+            
+            
+            <a class="menu-link " href="/Nonoxs111-blog/about/"> 关于</a>
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div id="pjax-container"><button id="toTopBtn"><i class="fa-solid fa-hand-point-up " ></i></button>
+<button id="toggleButton"><i class="fa-solid fa-chart-bar " ></i></button>
+<div id="overlay" class="overlay">
+  <div class="content">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E-Prompt-%E5%88%B0%E4%BA%A7%E5%93%81%E7%BA%A7-Landing-Page-%E2%80%94-%E4%B8%80%E4%BB%BD%E5%86%99%E7%BB%99%E8%AE%BE%E8%AE%A1%E5%B8%88%E7%9A%84%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%A4%8D%E7%9B%98"><span class="toc-text">从 Prompt 到产品级 Landing Page — 一份写给设计师的前端工程复盘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF"><span class="toc-text">一、项目背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%BA%A7%E5%93%81%E8%AE%BE%E5%AE%9A"><span class="toc-text">二、产品设定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F"><span class="toc-text">三、设计系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E8%89%B2%E5%BD%A9"><span class="toc-text">3.1 色彩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AD%97%E4%BD%93"><span class="toc-text">3.2 字体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%8F%99%E4%BA%8B%E7%BB%93%E6%9E%84"><span class="toc-text">3.3 叙事结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-text">四、技术栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%AE%9E%E7%8E%B0"><span class="toc-text">五、核心组件实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Product-Demo-%E2%80%94-%E6%95%B4%E4%B8%AA%E9%A1%B5%E9%9D%A2%E7%9A%84%E7%81%B5%E9%AD%82"><span class="toc-text">5.1 Product Demo — 整个页面的灵魂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%BB%9A%E5%8A%A8%E5%8A%A8%E7%94%BB"><span class="toc-text">5.2 滚动动画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%8C%89%E9%92%AE%E6%BB%9A%E5%8A%A8%E5%88%B0-Demo"><span class="toc-text">5.3 按钮滚动到 Demo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">六、项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AE%83%E7%9C%8B%E8%B5%B7%E6%9D%A5%E2%80%9D%E5%83%8F%E5%AE%98%E7%BD%91%E2%80%9D"><span class="toc-text">七、为什么它看起来”像官网”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3%E6%B1%87%E6%80%BB"><span class="toc-text">八、问题与解决汇总</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E9%83%A8%E7%BD%B2"><span class="toc-text">九、部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">十、总结</span></a></li></ol></li></ol>
+    <button id="closeButton"><i class="fa-solid fa-circle-xmark"></i></button>
+  </div>
+</div>
+<div class="wrapper post">
+  <head>
+    <!-- 引入 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="generator" content="Hexo 8.1.2"></head>
+
+
+
+  <main class="page-content" aria-label="Content">
+      <header class="header">
+        
+          <div class="tags">
+            <a href="/Nonoxs111-blog/tags/React/" class="tag"># React</a><a href="/Nonoxs111-blog/tags/Tailwind-CSS/" class="tag"># Tailwind CSS</a><a href="/Nonoxs111-blog/tags/Framer-Motion/" class="tag"># Framer Motion</a><a href="/Nonoxs111-blog/tags/%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/" class="tag"># 产品设计</a><a href="/Nonoxs111-blog/tags/%E7%BD%91%E9%A1%B5%E8%AE%BE%E8%AE%A1/" class="tag"># 网页设计</a><a href="/Nonoxs111-blog/tags/%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1/" class="tag"># 交互设计</a>
+          </div>
+        
+        <h1 class="header-title" itemprop="headline">从 Prompt 到产品级 Landing Page — 一份写给设计师的前端工程复盘</h1>
+          <div class="post-meta">
+            最后更新: <time>Jul 19, 2026</time>
+            作者: <span itemprop="author">
+              <span itemprop="name">Nonoxs</span>
+            </span>
+            字数: <span class="post-count">2.1k</span>
+            预计阅读时间: <span class="post-count">8min</span> 
+          </div>       
+        </header>
+          <div class="page-content"><h1 id="从-Prompt-到产品级-Landing-Page-—-一份写给设计师的前端工程复盘"><a href="#从-Prompt-到产品级-Landing-Page-—-一份写给设计师的前端工程复盘" class="headerlink" title="从 Prompt 到产品级 Landing Page — 一份写给设计师的前端工程复盘"></a>从 Prompt 到产品级 Landing Page — 一份写给设计师的前端工程复盘</h1><blockquote>
+<p>用一份 17KB 的 Prompt，让 AI 从零搭建了一个产品级官网。<br>这篇文章记录整个过程：设计决策、技术选型、踩坑修复、以及最终交付。</p>
+</blockquote>
+<hr>
+<h2 id="一、项目背景"><a href="#一、项目背景" class="headerlink" title="一、项目背景"></a>一、项目背景</h2><p>为投递<strong>月之暗面（Moonshot AI）网页美学评论实习生</strong>岗位，需要做一个作品集级别的 Landing Page。</p>
+<p>核心要求：基于 Notion 2013 年的 “Democratize Software” 理念，重新演绎为一个 2026 年 AI 时代的新产品。</p>
+<p><strong>线上地址</strong>：<a href="https://nonoxs111.github.io/notion-landing/">nonoxs111.github.io&#x2F;notion-landing</a><br><strong>GitHub 仓库</strong>：<a target="_blank" rel="noopener" href="https://github.com/Nonoxs111/notion-landing">Nonoxs111&#x2F;notion-landing</a></p>
+<hr>
+<h2 id="二、产品设定"><a href="#二、产品设定" class="headerlink" title="二、产品设定"></a>二、产品设定</h2><p>产品定位：一个融合 AI Agent、Visual Editor、Modular Builder、Workflow Automation 的软件创造空间。</p>
+<p>核心理念：<strong>Software should be created, not coded.</strong></p>
+<p>无需编程，只需要描述需求。例如”帮我创建一个个人项目管理工具”→ AI 自动生成页面、数据结构、工作流、自动化能力。</p>
+<hr>
+<h2 id="三、设计系统"><a href="#三、设计系统" class="headerlink" title="三、设计系统"></a>三、设计系统</h2><h3 id="3-1-色彩"><a href="#3-1-色彩" class="headerlink" title="3.1 色彩"></a>3.1 色彩</h3><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>颜色</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主色</td>
+<td><code>#FF4B4A</code> (Coral Red)</td>
+<td>CTA 按钮、重点强调、交互反馈</td>
+</tr>
+<tr>
+<td>背景</td>
+<td><code>#FAFAF8</code> (Warm White)</td>
+<td>主页面背景</td>
+</tr>
+<tr>
+<td>文字</td>
+<td><code>#1A1A1A</code> &#x2F; <code>#6B6B6B</code></td>
+<td>标题和正文</td>
+</tr>
+<tr>
+<td>边框</td>
+<td><code>#E8E8E4</code></td>
+<td>卡片和分割线</td>
+</tr>
+</tbody></table>
+<p><strong>比例</strong>：80% 白色空间 &#x2F; 15% 黑灰文字 &#x2F; 5% 红色强调</p>
+<p>关键技巧：背景不用纯白 <code>#FFFFFF</code>，而是 <code>#FAFAF8</code>——多了一点点暖色，页面立刻有了”高级感”。</p>
+<h3 id="3-2-字体"><a href="#3-2-字体" class="headerlink" title="3.2 字体"></a>3.2 字体</h3><table>
+<thead>
+<tr>
+<th>字体</th>
+<th>用途</th>
+<th>感觉</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Playfair Display (serif)</td>
+<td>Hero 标题、Vision 宣言</td>
+<td>编辑感、权威、人文</td>
+</tr>
+<tr>
+<td>Inter (sans-serif)</td>
+<td>正文、按钮、标签</td>
+<td>清晰、现代、高可读性</td>
+</tr>
+</tbody></table>
+<p>为什么用 Playfair Display？大部分 AI 产品官网用几何无衬线字体（如 SF Pro），但我们走编辑杂志风格——这让页面在同类产品中立刻不同。</p>
+<h3 id="3-3-叙事结构"><a href="#3-3-叙事结构" class="headerlink" title="3.3 叙事结构"></a>3.3 叙事结构</h3><p>页面不是功能列表，而是一个<strong>叙事弧线</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Hero       →  &quot;这是未来&quot;        （情感共鸣）</span><br><span class="line">Problem    →  &quot;现在有问题&quot;      （痛点确认）</span><br><span class="line">Solution   →  &quot;我们有方案&quot;      （价值主张）</span><br><span class="line">Features   →  &quot;具体能做什么&quot;    （能力证明）</span><br><span class="line">Vision     →  &quot;这是信仰&quot;        （升华、深色背景）</span><br><span class="line">CTA        →  &quot;开始吧&quot;          （行动转化）</span><br></pre></td></tr></table></figure>
+
+<p>Vision 安排在 Features 之后，而且是全页面唯一的深色背景区域。因为浏览到页面下半部用户注意力下降，深色切换能重新抓住注意力。</p>
+<hr>
+<h2 id="四、技术栈"><a href="#四、技术栈" class="headerlink" title="四、技术栈"></a>四、技术栈</h2><table>
+<thead>
+<tr>
+<th>层</th>
+<th>选择</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>框架</td>
+<td>React 18</td>
+<td>组件化，状态管理灵活</td>
+</tr>
+<tr>
+<td>构建</td>
+<td>Vite</td>
+<td>比 CRA 快 10 倍</td>
+</tr>
+<tr>
+<td>样式</td>
+<td>Tailwind CSS 3</td>
+<td>设计 tokens 落地到代码</td>
+</tr>
+<tr>
+<td>动画</td>
+<td>Framer Motion</td>
+<td>React 生态最好的动画库</td>
+</tr>
+<tr>
+<td>图标</td>
+<td>Lucide React</td>
+<td>轻量、现代</td>
+</tr>
+<tr>
+<td>部署</td>
+<td>GitHub Pages</td>
+<td>免费、无需注册</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、核心组件实现"><a href="#五、核心组件实现" class="headerlink" title="五、核心组件实现"></a>五、核心组件实现</h2><h3 id="5-1-Product-Demo-—-整个页面的灵魂"><a href="#5-1-Product-Demo-—-整个页面的灵魂" class="headerlink" title="5.1 Product Demo — 整个页面的灵魂"></a>5.1 Product Demo — 整个页面的灵魂</h3><p>Demo 经历了三次重写：</p>
+<p><strong>V1</strong>：假输入框 → 打字动画 → 5 张彩色卡片弹出<br><strong>问题</strong>：用户输入是假的（总是生成同样的东西）；卡片展开时把整排卡片挤飞；看不出产品到底能干什么</p>
+<p><strong>V2</strong>：Block 调色板 + 画布，点击添加模块<br><strong>问题</strong>：JSON 序列化丢失函数导致拖拽失效；模块预览看不懂（灰杠杠）；画布是网格不是页面</p>
+<p><strong>V3（最终版）</strong>：竖排页面布局的 Block 构建器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────┬──────────────────────────────────┐</span><br><span class="line">│  Blocks     │                                  │</span><br><span class="line">│             │  📊 Table — 任务数据表格         │</span><br><span class="line">│  📊 Table   │  ┌──────────────────────────┐   │</span><br><span class="line">│  📋 Board   │  │ Task name │ Status │ ... │   │</span><br><span class="line">│  📅 Cal     │  │ Design   │ Done   │ ... │   │</span><br><span class="line">│  📝 Doc     │  └──────────────────────────┘   │</span><br><span class="line">│  📊 Timeline│                                  │</span><br><span class="line">│             │  📋 Board — 看板视图              │</span><br><span class="line">│  ─────────  │  [To Do] [In Progress] [Done]   │</span><br><span class="line">│  ✨ AI Fill │                                  │</span><br><span class="line">│             │  📅 Calendar — 七月日历          │</span><br><span class="line">│             │  📝 Document — 富文本文档        │</span><br><span class="line">└─────────────┴──────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p><strong>交互方式</strong>：</p>
+<ul>
+<li><strong>拖拽</strong>：从左侧拖 Block 到右侧画布（HTML5 Drag &amp; Drop API）</li>
+<li><strong>点击添加</strong>：点击左侧 Block 直接添加</li>
+<li><strong>拖拽排序</strong>：画布内 Block 可上下重排（Framer Motion Reorder）</li>
+<li><strong>展开详情</strong>：点击 Block → 浮层放大（fixed overlay，不影响布局）</li>
+<li><strong>删除</strong>：hover 出现 × 按钮</li>
+<li><strong>AI Fill</strong>：一键填充完整预设（项目管理&#x2F;知识库）</li>
+</ul>
+<p><strong>关键 Bug 修复</strong>：拖拽使用 <code>JSON.stringify</code> 传递数据时会丢失函数（<code>preview</code>），导致 Block 拖过去是空壳。修复方式是只传 <code>blockId</code>，drop 时从原数组按 id 查找完整定义。</p>
+<h3 id="5-2-滚动动画"><a href="#5-2-滚动动画" class="headerlink" title="5.2 滚动动画"></a>5.2 滚动动画</h3><p>每个 Section 使用 Framer Motion 的 <code>useInView</code>：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ref = <span class="title function_">useRef</span>(<span class="literal">null</span>);</span><br><span class="line"><span class="keyword">const</span> isInView = <span class="title function_">useInView</span>(ref, &#123; <span class="attr">once</span>: <span class="literal">true</span>, <span class="attr">margin</span>: <span class="string">&#x27;-80px&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">motion.div</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">ref</span>=<span class="string">&#123;ref&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">initial</span>=<span class="string">&#123;&#123;</span> <span class="attr">opacity:</span> <span class="attr">0</span>, <span class="attr">y:</span> <span class="attr">24</span> &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">animate</span>=<span class="string">&#123;isInView</span> ? &#123; <span class="attr">opacity:</span> <span class="attr">1</span>, <span class="attr">y:</span> <span class="attr">0</span> &#125; <span class="attr">:</span> &#123;&#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">/&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>once: true</code> — 动画只触发一次</li>
+<li><code>margin: &#39;-80px&#39;</code> — 元素进入视口前 80px 就触发，用户看到时动画已完成</li>
+</ul>
+<h3 id="5-3-按钮滚动到-Demo"><a href="#5-3-按钮滚动到-Demo" class="headerlink" title="5.3 按钮滚动到 Demo"></a>5.3 按钮滚动到 Demo</h3><p>三个”Start Building”按钮点击后平滑滚动到 Demo 区域。</p>
+<p><strong>踩坑</strong>：CSS <code>scroll-behavior: smooth</code> + JS <code>scrollIntoView({ behavior: &#39;smooth&#39; })</code> 叠加会导致浏览器滚动动画期间鼠标滚轮被吞掉，用户无法中断滚动回到顶部。</p>
+<p><strong>解决方案</strong>：移除 CSS <code>scroll-behavior: smooth</code>，用 <code>requestAnimationFrame</code> 手写缓动动画，监听 <code>wheel</code> 事件随时取消：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">scrollToElement</span>(<span class="params">elementId, offset = <span class="number">96</span></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> el = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(elementId);</span><br><span class="line">  <span class="keyword">const</span> target = el.<span class="title function_">getBoundingClientRect</span>().<span class="property">top</span> + <span class="variable language_">window</span>.<span class="property">scrollY</span> - offset;</span><br><span class="line">  <span class="comment">// easeOutCubic + requestAnimationFrame</span></span><br><span class="line">  <span class="comment">// 监听 wheel 事件，用户转动滚轮立即取消</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、项目结构"><a href="#六、项目结构" class="headerlink" title="六、项目结构"></a>六、项目结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">notion-landing/</span><br><span class="line">├── index.html</span><br><span class="line">├── tailwind.config.js          ← 设计系统（颜色、字体、间距 tokens）</span><br><span class="line">├── .github/workflows/deploy.yml ← GitHub Pages 自动部署</span><br><span class="line">└── src/</span><br><span class="line">    ├── main.jsx</span><br><span class="line">    ├── App.jsx                  ← 根组件，7 个 Section 纵向排列</span><br><span class="line">    ├── index.css                ← Tailwind + 全局质感样式</span><br><span class="line">    ├── utils/</span><br><span class="line">    │   └── scroll.js            ← 可中断的平滑滚动工具</span><br><span class="line">    ├── components/</span><br><span class="line">    │   ├── Navbar.jsx           ← 固定导航（滚动透明→毛玻璃）</span><br><span class="line">    │   ├── Button.jsx           ← 动画按钮（Framer Motion）</span><br><span class="line">    │   ├── SectionBadge.jsx     ← 区块标签</span><br><span class="line">    │   ├── Footer.jsx</span><br><span class="line">    │   └── demo/</span><br><span class="line">    │       └── ProductDemo.jsx  ← ★ 核心交互 Demo</span><br><span class="line">    └── sections/</span><br><span class="line">        ├── Hero.jsx             ← 大标题 + Demo</span><br><span class="line">        ├── Problem.jsx          ← 左文案右卡片</span><br><span class="line">        ├── Solution.jsx         ← 5 支柱网格</span><br><span class="line">        ├── Features.jsx         ← 2×2 功能卡片</span><br><span class="line">        ├── Vision.jsx           ← 深色宣言（唯一深色区块）</span><br><span class="line">        └── CTA.jsx              ← 行动号召 + Footer</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、为什么它看起来”像官网”"><a href="#七、为什么它看起来”像官网”" class="headerlink" title="七、为什么它看起来”像官网”"></a>七、为什么它看起来”像官网”</h2><table>
+<thead>
+<tr>
+<th>要素</th>
+<th>做法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>留白</strong></td>
+<td>每个 Section 间距 120px+，留白是设计元素不是空着的地方</td>
+</tr>
+<tr>
+<td><strong>色彩克制</strong></td>
+<td>红色只出现在 CTA 按钮和极少数强调处</td>
+</tr>
+<tr>
+<td><strong>字体分工</strong></td>
+<td>Playfair Display（情感）+ Inter（信息），两套字体各司其职</td>
+</tr>
+<tr>
+<td><strong>动画有原因</strong></td>
+<td>卡片弹簧动画 &#x3D; 实体感，打字机 &#x3D; 自然感，而不是炫技</td>
+</tr>
+<tr>
+<td><strong>叙事有结构</strong></td>
+<td>不是罗列功能，是说一个完整的故事</td>
+</tr>
+<tr>
+<td><strong>双语不打架</strong></td>
+<td>英文是视觉主语言，中文小字辅助</td>
+</tr>
+<tr>
+<td><strong>深色只出现一次</strong></td>
+<td>Vision 区块制造页面”高潮”，用完就回到浅色</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="八、问题与解决汇总"><a href="#八、问题与解决汇总" class="headerlink" title="八、问题与解决汇总"></a>八、问题与解决汇总</h2><table>
+<thead>
+<tr>
+<th>#</th>
+<th>问题</th>
+<th>原因</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Demo 卡片展开挤飞布局</td>
+<td>内联膨胀改变文档流</td>
+<td>改为 fixed overlay 浮层</td>
+</tr>
+<tr>
+<td>2</td>
+<td>拖拽 Block 到画布后消失</td>
+<td><code>JSON.stringify</code> 丢失 <code>preview</code> 函数</td>
+<td>传 <code>blockId</code>，drop 时从原数组还原</td>
+</tr>
+<tr>
+<td>3</td>
+<td>彩色模块 AI 味重</td>
+<td>蓝绿紫琥珀粉五种颜色</td>
+<td>统一珊瑚红 + 黑白灰</td>
+</tr>
+<tr>
+<td>4</td>
+<td>预设按钮点击无反应</td>
+<td><code>applyPreset</code> 中 blocks 数组引用错误</td>
+<td>重写为按 id 查找定义</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Document Block 看不懂</td>
+<td>灰色占位条太抽象</td>
+<td>改为带标题、段落、列表、关联数据库的真实文档</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Table Block 有 emoji</td>
+<td><code>✅ Done</code> <code>🔄 In progress</code></td>
+<td>纯文字状态标签</td>
+</tr>
+<tr>
+<td>7</td>
+<td>点击按钮后滚轮失效</td>
+<td>CSS <code>scroll-behavior: smooth</code> + JS <code>scrollIntoView</code> 冲突</td>
+<td>移除 CSS smooth，手写可中断动画</td>
+</tr>
+<tr>
+<td>8</td>
+<td>三个按钮点不动</td>
+<td>按钮没有 onClick</td>
+<td>统一跳转到 <code>#demo</code> 锚点</td>
+</tr>
+<tr>
+<td>9</td>
+<td>npm ci 跨平台失败</td>
+<td>Windows 生成的 lock 文件缺 Linux 平台依赖</td>
+<td>改用 <code>npm install</code>，lock 文件不提交</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="九、部署"><a href="#九、部署" class="headerlink" title="九、部署"></a>九、部署</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地开发</span></span><br><span class="line"><span class="built_in">cd</span> notion-landing</span><br><span class="line">npm install</span><br><span class="line">npm run dev        <span class="comment"># → http://localhost:5173</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生产构建</span></span><br><span class="line">npm run build      <span class="comment"># → dist/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推送即部署（GitHub Actions 自动构建到 GitHub Pages）</span></span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<p>部署后在仓库 Settings → Pages 选择 GitHub Actions 源，线上地址：<br><code>https://nonoxs111.github.io/notion-landing/</code></p>
+<hr>
+<h2 id="十、总结"><a href="#十、总结" class="headerlink" title="十、总结"></a>十、总结</h2><p>这个项目最核心的收获：</p>
+<ol>
+<li><p><strong>Prompt 即设计文档</strong>：一份好的 Prompt 里包含了视觉规范、信息架构、交互预期的全部信息。关键在于把它们翻译成代码决策。</p>
+</li>
+<li><p><strong>动画是功能不是装饰</strong>：每个动画都要有原因——弹簧 &#x3D; 实体感、打字机 &#x3D; 自然感、fade up &#x3D; 引导阅读节奏。</p>
+</li>
+<li><p><strong>Demo 是信任的桥梁</strong>：一个真实可交互的 Demo 比 1000 字的产品描述更有说服力。但前提是它必须是真的，不能是假的。</p>
+</li>
+<li><p><strong>色彩统一 &gt; 色彩丰富</strong>：AI 产品最容易犯的错误就是”每个模块一个颜色”。统一的色调才有品牌感。</p>
+</li>
+<li><p><strong>先修 Bug 再加功能</strong>：拖拽失效、按钮没反应、滚动锁定——这些看似小问题，对用户体验是致命的。</p>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>从一份 Prompt 到一个产品级 Landing Page。<br>写好 Prompt，AI 可以是一个很好的前端搭档。</p>
+</blockquote>
+</div>          
+          <nav class="post-nav">
+    
+    
+    <a class="post-nav-item post-nav-next" href="/Nonoxs111-blog/2026/07/19/hello-world/">
+      <div class="nav-arrow">OLDER&nbsp;&gt;</div>
+      <span class="post-title">Hello World</span>
+    </a>
+    
+  </nav>
+
+   </main>
+</div>
+</div>
+  <footer class="footer">
+    <small>© 2025 Nonoxs. All wrongs reserved.</small>
+  </footer>
+  
+  
+
+    
+      <script src="/Nonoxs111-blog/js/main.js"></script>
+    
+  
+  <script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.js"></script>
+  <script>
+    var pjax = new Pjax({
+      elements: 'a.menu-link, a[href^="/"]:not([target="_blank"])',
+      selectors: ['#pjax-container', 'title']
+    });
+    document.addEventListener('pjax:success', function() {
+      // re-apply highlight data-lang after pjax swap
+      document.querySelectorAll('figure.highlight').forEach(function(item) {
+        var langName = item.getAttribute('class').split(' ')[1];
+        if (langName === 'plain' || langName === undefined) langName = 'Code';
+        item.setAttribute('data-lang', langName);
+      });
+      // update active menu link
+      var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+      document.querySelectorAll('.menu-link').forEach(function(link) {
+        var href = link.getAttribute('href').replace(/\/$/, '') || '/';
+        if (href === currentPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+      // close mobile menu after navigation
+      var trigger = document.getElementById('menu-trigger');
+      if (trigger) trigger.checked = false;
+    });
+  </script>
+  <script>
+  // Blue rain droplet canvas
+  (function() {
+    var canvas = document.getElementById('rain-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var W, H;
+    var drops = [];
+    var DROP_COUNT = 80;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function randomDrop() {
+      return {
+        x: Math.random() * W,
+        y: Math.random() * -H,
+        r: 2 + Math.random() * 4,
+        speed: 6 + Math.random() * 10,
+        opacity: 0.15 + Math.random() * 0.25,
+        sway: (Math.random() - 0.5) * 1.5
+      };
+    }
+
+    for (var i = 0; i < DROP_COUNT; i++) {
+      var d = randomDrop();
+      d.y = Math.random() * H;
+      drops.push(d);
+    }
+
+    function drawDrop(drop) {
+      ctx.save();
+      ctx.translate(drop.x, drop.y);
+      ctx.beginPath();
+      // teardrop shape
+      ctx.moveTo(0, -drop.r * 2);
+      ctx.bezierCurveTo(drop.r, -drop.r, drop.r, 0, 0, drop.r);
+      ctx.bezierCurveTo(-drop.r, 0, -drop.r, -drop.r, 0, -drop.r * 2);
+      ctx.closePath();
+      var isDark = document.body.getAttribute('data-theme') === 'dark';
+      var color = isDark ? '100, 180, 220' : '80, 160, 210';
+      ctx.fillStyle = 'rgba(' + color + ',' + drop.opacity + ')';
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < drops.length; i++) {
+        var drop = drops[i];
+        drop.y += drop.speed;
+        drop.x += drop.sway;
+        if (drop.y > H + 20) {
+          drops[i] = randomDrop();
+        }
+        drawDrop(drop);
+      }
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  })();
+  </script>
+  <script>
+  // Navbar scroll effect - desktop only
+  (function() {
+    var navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    var isScrolled = false;
+    var ticking = false;
+    function update() {
+      if (window.innerWidth <= 768) return;
+      var y = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+      var shouldScroll = y > 10;
+      if (shouldScroll !== isScrolled) {
+        isScrolled = shouldScroll;
+        navbar.classList.toggle('scrolled', shouldScroll);
+      }
+      ticking = false;
+    }
+    window.addEventListener('scroll', function() {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+  })();
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('loaded');
+});
+
+  </script>
+</body>
+</html>
